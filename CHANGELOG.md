@@ -4,6 +4,7 @@
 
 * Added Field Output Handler for clean file names.  E.g. change `Expense/2/receipt_802fd5cd009e0a39cf2202f4bfb9c0b4.pdf`
   into `receipt.pdf`.
+* Fixed #77 Contribution dataprocessor with current user contact filter shows no results by !75
 
 # Version 1.31
 
