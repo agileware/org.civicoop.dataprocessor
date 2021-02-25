@@ -86,6 +86,9 @@ class UIOutputHelper {
           if (isset($output['permission'])) {
             $item['permission'] = $output['permission'];
           }
+          if (isset($output['configuration']['navigation_weight'])) {
+            $item['weight'] = $output['configuration']['navigation_weight'];
+          }
           _dataprocessor_civix_insert_navigation_menu($menu, $output['configuration']['navigation_parent_path'], $item);
         }
       }

@@ -5,6 +5,16 @@
         <div class="clear"></div>
     </div>
     <div class="crm-section">
+      <div class="label">{$form.navigation_weight.label}</div>
+      <div class="content">{$form.navigation_weight.html}
+        <p class="description">
+          {ts 1='https://lab.civicrm.org/dev/core/-/issues/2424'}This will define the order in the navigation menu. A lower value means more at the top.  <br />
+            Up to CiviCRM 5.36 this seems to be broken in CiviCRM Core. See this <a href="%1">bug report</a>
+          {/ts}</p>
+      </div>
+      <div class="clear"></div>
+    </div>
+    <div class="crm-section">
         <div class="label">{$form.permission.label}</div>
         <div class="content">{$form.permission.html}</div>
         <div class="clear"></div>

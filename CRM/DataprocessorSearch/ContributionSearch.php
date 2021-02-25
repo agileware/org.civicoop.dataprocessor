@@ -63,6 +63,7 @@ class CRM_DataprocessorSearch_ContributionSearch implements UIFormOutputInterfac
     // navigation field
     $navigationOptions = $navigation->getNavigationOptions();
     $form->add('select', 'navigation_parent_path', ts('Parent Menu'), array('' => ts('- select -')) + $navigationOptions, true);
+    $form->add('text', 'navigation_weight', E::ts('Weight'), array('class' => 'huge'), false);
 
     $defaults = array();
     if ($output) {
@@ -75,6 +76,9 @@ class CRM_DataprocessorSearch_ContributionSearch implements UIFormOutputInterfac
         }
         if (isset($output['configuration']['navigation_parent_path'])) {
           $defaults['navigation_parent_path'] = $output['configuration']['navigation_parent_path'];
+        }
+        if (isset($output['configuration']['navigation_weight'])) {
+          $defaults['navigation_weight'] = $output['configuration']['navigation_weight'];
         }
         if (isset($output['configuration']['no_result_text'])) {
           $defaults['no_result_text'] = $output['configuration']['no_result_text'];
@@ -123,6 +127,7 @@ class CRM_DataprocessorSearch_ContributionSearch implements UIFormOutputInterfac
     $output['permission'] = $submittedValues['permission'];
     $configuration['contribution_id_field'] = $submittedValues['contribution_id_field'];
     $configuration['navigation_parent_path'] = $submittedValues['navigation_parent_path'];
+    $configuration['navigation_weight'] = $submittedValues['navigation_weight'];
     $configuration['hide_id_field'] = $submittedValues['hide_id_field'];
     $configuration['hidden_fields'] = $submittedValues['hidden_fields'];
     $configuration['no_result_text'] = $submittedValues['no_result_text'];
