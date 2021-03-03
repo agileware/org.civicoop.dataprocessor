@@ -1,6 +1,7 @@
 # Version 1.33 (not yet released)
 
 * Added weight to search/reports outputs.
+* Fix for #71 deprecation warnings.
 
 # Version 1.32
 

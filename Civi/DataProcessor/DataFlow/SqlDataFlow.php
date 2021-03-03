@@ -127,7 +127,7 @@ abstract class SqlDataFlow extends AbstractDataFlow {
       $sql = "{$selectAndFrom} {$where} {$groupBy} {$orderBy}";
       $countSql = "SELECT COUNT(*) AS count FROM ({$sql}) `{$countName}`";
       $this->sqlCountStatements[] = $countSql;
-      $countDao = \CRM_Core_DAO::executeQuery($countSql, [], true, NULL, false, true, true);
+      $countDao = \CRM_Core_DAO::executeQuery($countSql, [], true, NULL, false, true);
       $this->count = 0;
       if (!is_a($countDao, 'DB_Error') && $countDao) {
         while ($countDao->fetch()) {
@@ -149,7 +149,7 @@ abstract class SqlDataFlow extends AbstractDataFlow {
       }
       $sql .= " {$limitStatement}";
       $this->sqlStatements[] = $sql;
-      $this->dao = \CRM_Core_DAO::executeQuery($sql, [], true, NULL, false, true, true);
+      $this->dao = \CRM_Core_DAO::executeQuery($sql, [], true, NULL, false, true);
       if (is_a($this->dao, 'DB_Error') || !$this->dao) {
         throw new DataFlowException('Error in dataflow: '.$sql);
       }
