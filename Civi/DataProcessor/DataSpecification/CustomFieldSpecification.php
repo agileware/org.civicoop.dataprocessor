@@ -54,6 +54,9 @@ class CustomFieldSpecification extends FieldSpecification {
     if ($this->type == 'Country') {
       return false;
     }
+    if ($this->type == 'StateProvince') {
+      return false;
+    }
     if ($this->customField['html_type'] == 'Radio' && empty($this->customField['serialize'])) {
       return false;
     }

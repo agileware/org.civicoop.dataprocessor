@@ -1,5 +1,7 @@
 # Version 1.34 (not yet released)
 
+* Fixed issue with filtering on state/province custom fields.
+
 # Version 1.33
 
 * Added weight to search/reports outputs.
