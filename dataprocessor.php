@@ -24,10 +24,13 @@ function dataprocessor_get_factory() {
  */
 function dataprocessor_civicrm_container(ContainerBuilder $container) {
   // Register the TypeFactory
-  $container->setDefinition('data_processor_factory', new Definition('Civi\DataProcessor\Factory'));
+  $factoryDefinition = new Definition('Civi\DataProcessor\Factory');
+  $factoryDefinition->setPrivate(FALSE);
+  $container->setDefinition('data_processor_factory', $factoryDefinition);
 
   $apiKernelDefinition = $container->getDefinition('civi_api_kernel');
   $apiProviderDefinition = new Definition('Civi\DataProcessor\Output\Api');
+  $apiProviderDefinition->setPrivate(FALSE);
   $apiKernelDefinition->addMethodCall('registerApiProvider', array($apiProviderDefinition));
 
   // Add the data source for custom groups with multiple set.

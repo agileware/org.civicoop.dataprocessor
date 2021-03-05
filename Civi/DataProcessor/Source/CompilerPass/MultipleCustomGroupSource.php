@@ -30,6 +30,7 @@ class MultipleCustomGroupSource implements CompilerPassInterface {
           [$dao->name, $dao->title, $dao->table_name],
         ];
         $definition = new Definition('Civi\DataProcessor\Factory\Definition', $arguments);
+        $definition->setPrivate(FALSE);
         $factoryDefinition->addMethodCall('addDataSource', array('multi_custom_group_'.$dao->name, $definition, E::ts('Custom group: %1', [1=>$dao->title])));
       }
     } catch (\CiviCRM_API3_Exception $e) {

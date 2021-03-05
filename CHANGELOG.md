@@ -1,7 +1,8 @@
-# Version 1.33 (not yet released)
+# Version 1.33
 
 * Added weight to search/reports outputs.
 * Fix for #71 deprecation warnings.
+* Compatibility fix for Symfony ^3.4 ^4.0.
 
 # Version 1.32
 
