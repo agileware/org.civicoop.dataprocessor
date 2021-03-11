@@ -4,6 +4,8 @@
  * @license AGPL-3.0
  */
 
+use Civi\DataProcessor\DataFlow\CombinedDataFlow\CombinedSqlDataFlow;
+use Civi\DataProcessor\DataFlow\SqlTableDataFlow;
 use CRM_Dataprocessor_ExtensionUtil as E;
 use Civi\DataProcessor\Output\UIFormOutputInterface;
 use Civi\DataProcessor\ProcessorType\AbstractProcessorType;
@@ -320,7 +322,7 @@ class CRM_Contact_DataProcessorContactSummaryTab implements UIFormOutputInterfac
    * @throws \Civi\DataProcessor\Exception\FieldNotFoundException
    */
   public static function alterDataProcessor($contact_id, $output, AbstractProcessorType $dataProcessorClass) {
-    list($datasource_name, $field_name) = explode('::', $output['configuration']['contact_id_field'], 2);
+    [$datasource_name, $field_name] = explode('::', $output['configuration']['contact_id_field'], 2);
     $dataSource = $dataProcessorClass->getDataSourceByName($datasource_name);
     if (!$dataSource) {
       throw new \Civi\DataProcessor\Exception\DataSourceNotFoundException(E::ts("Requires data source '%1' which could not be found. Did you rename or deleted the data source?", array(1=>$datasource_name)));
@@ -340,13 +342,30 @@ class CRM_Contact_DataProcessorContactSummaryTab implements UIFormOutputInterfac
     $fieldSpecification->alias = 'contact_summary_tab_contact_id';
     $dataFlow = $dataSource->ensureField($fieldSpecification);
     if ($dataFlow && $dataFlow instanceof SqlDataFlow) {
-      $whereClause = new SimpleWhereClause($dataFlow->getName(), $fieldSpecification->name, '=', $contact_id, $fieldSpecification->type);
+      $tableAlias = self::getTableAlias($dataFlow);
+      $whereClause = new SimpleWhereClause($tableAlias, $fieldSpecification->name, '=', $contact_id, $fieldSpecification->type);
       $dataFlow->addWhereClause($whereClause);
     } elseif ($dataFlow && $dataFlow instanceof InMemoryDataFlow) {
       $filterClass = new SimpleFilter($fieldSpecification->name, '=', $contact_id);
       $dataFlow->addFilter($filterClass);
     }
     return $dataProcessorClass;
+  }
+
+  /**
+   * Returns the table alias of a sql data flow.
+   *
+   * @param \Civi\DataProcessor\DataFlow\SqlDataFlow $dataFlow
+   * @return string|null
+   */
+  protected static function getTableAlias(SqlDataFlow $dataFlow) {
+    $tableAlias = $dataFlow->getName();
+    if ($dataFlow instanceof SqlTableDataFlow) {
+      $tableAlias = $dataFlow->getTableAlias();
+    } elseif ($dataFlow instanceof CombinedSqlDataFlow) {
+      $tableAlias = $dataFlow->getPrimaryTableAlias();
+    }
+    return $tableAlias;
   }
 
 }
