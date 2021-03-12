@@ -203,7 +203,7 @@ abstract class CRM_DataprocessorOutputExport_AbstractOutputExport implements Exp
         'exportBatchHeader'
       ), //call back method
       array($filename,$formValues, $dataProcessor['id'], $outputBAO['id'], $sortFieldName, $sortDirection, $idField, $selectedIds), //parameters,
-      E::ts('Create header'),
+      E::ts('Create header')
     );
     //now add this task to the queue
     $queue->createItem($task);
@@ -235,7 +235,7 @@ abstract class CRM_DataprocessorOutputExport_AbstractOutputExport implements Exp
         'exportBatchFooter'
       ), //call back method
       array($filename,$formValues, $dataProcessor['id'], $outputBAO['id'], $sortFieldName, $sortDirection, $idField, $selectedIds), //parameters,
-      E::ts('Create footer'),
+      E::ts('Create footer')
     );
     //now add this task to the queue
     $queue->createItem($task);
