@@ -67,6 +67,13 @@ class CustomFieldSpecification extends FieldSpecification {
   }
 
   /**
+   * @return bool
+   */
+  public function isMultiValueField() {
+    return $this->isMultiple();
+  }
+
+  /**
    * @return String
    */
   public function getName() {

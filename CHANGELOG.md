@@ -1,6 +1,7 @@
 # Version 1.34 (not yet released)
 
 * Fixed issue with filtering on state/province custom fields.
+* Fixed issue with filtering on multi value fields (fields which holds multiple values separated by the VALUE SEPARATOR symbol).
 * Fix for #85 DB Error: no such field when using "Tab on contact summary" with contributions
 
 # Version 1.33

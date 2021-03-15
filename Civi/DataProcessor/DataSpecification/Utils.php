@@ -35,6 +35,9 @@ class Utils {
       $name = $namePrefix.$field['name'];
       $title = $titlePrefix.$field['title'];
       $fieldSpec = new FieldSpecification($name, $type, $title, $options, $alias);
+      if (isset($field['serialize']) && $field['serialize'] == \CRM_Core_DAO::SERIALIZE_SEPARATOR_BOOKEND) {
+        $fieldSpec->setMultiValueField(true);
+      }
       $dataSpecification->addFieldSpecification($fieldSpec->name, $fieldSpec);
     }
   }

@@ -34,6 +34,14 @@ class FieldSpecification implements SqlFieldSpecification {
   public $options = null;
 
   /**
+   * A multi value field is a field which holds multiple values
+   * separated by \CRM_Core_DAO::valueSeparator
+   *
+   * @var bool
+   */
+  protected $multiValueField = false;
+
+  /**
    * @var null|String
    */
   protected $sqlValueFormatFunction = null;
@@ -130,6 +138,31 @@ class FieldSpecification implements SqlFieldSpecification {
    */
   public function getName() {
     return $this->name;
+  }
+
+  /**
+   * Gets whether this is a multi value field.
+   * A multi value field is a field which holds multiple values
+   * separated by \CRM_Core_DAO::valueSeparator
+   *
+   * @return bool
+   */
+  public function isMultiValueField() {
+    if (!$this->getOptions()) {
+      return false;
+    }
+    return $this->multiValueField;
+  }
+
+  /**
+   * Set whether this is a multi value field.
+   * A multi value field is a field which holds multiple values
+   * separated by \CRM_Core_DAO::valueSeparator
+   *
+   * @param bool $value
+   */
+  public function setMultiValueField($value) {
+    $this->multiValueField = $value ? true : false;
   }
 
 }

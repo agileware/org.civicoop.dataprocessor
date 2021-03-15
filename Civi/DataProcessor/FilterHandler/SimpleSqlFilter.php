@@ -62,6 +62,8 @@ class SimpleSqlFilter extends AbstractFieldFilterHandler {
       if ($this->fieldSpecification->isMultiple()) {
         return TRUE;
       }
+    } elseif ($this->fieldSpecification->isMultiValueField()) {
+      return TRUE;
     }
     return false;
   }
