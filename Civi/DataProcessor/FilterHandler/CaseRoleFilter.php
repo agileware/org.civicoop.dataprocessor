@@ -184,7 +184,7 @@ class CaseRoleFilter extends AbstractFieldFilterHandler {
     $filterName = $filterSpec->alias;
     if (isset($submittedValues[$filterName.'_op']) && $submittedValues[$filterName.'_op'] == 'current_user') {
       $submittedValues[$filterName.'_op'] = 'IN';
-      $submittedValues[$filterName.'_value'] = [\CRM_Core_Session::getLoggedInContactID()];
+      $submittedValues[$filterName.'_value'] = [\CRM_Core_Session::getLoggedInContactID() ?? 0];
     }
     return parent::validateSubmittedFilterParams($submittedValues);
   }
@@ -198,7 +198,7 @@ class CaseRoleFilter extends AbstractFieldFilterHandler {
   public function applyFilterFromSubmittedFilterParams($submittedValues) {
     if (isset($submittedValues['op']) && $submittedValues['op'] == 'current_user') {
       $submittedValues['op'] = 'IN';
-      $submittedValues['value'] = [\CRM_Core_Session::getLoggedInContactID()];
+      $submittedValues['value'] = [\CRM_Core_Session::getLoggedInContactID() ?? 0];
     }
     parent::applyFilterFromSubmittedFilterParams($submittedValues);
   }
