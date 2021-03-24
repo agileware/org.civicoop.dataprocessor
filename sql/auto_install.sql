@@ -89,7 +89,7 @@ CREATE TABLE `civicrm_data_processor_field` (
 
 
 ,          CONSTRAINT FK_civicrm_data_processor_field_data_processor_id FOREIGN KEY (`data_processor_id`) REFERENCES `civicrm_data_processor`(`id`) ON DELETE CASCADE
-)    ;
+) ENGINE=InnoDb   ;
 
 -- /*******************************************************
 -- *
