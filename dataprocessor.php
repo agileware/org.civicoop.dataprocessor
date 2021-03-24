@@ -4,7 +4,7 @@ require_once 'dataprocessor.civix.php';
 use CRM_Dataprocessor_ExtensionUtil as E;
 
 use \Symfony\Component\DependencyInjection\ContainerBuilder;
-use \Symfony\Component\DependencyInjection\Definition;
+use \Civi\DataProcessor\Symfony\Component\DependencyInjection\DefinitionAdapter;
 
 /**
  * @return \Civi\DataProcessor\Factory
@@ -24,13 +24,11 @@ function dataprocessor_get_factory() {
  */
 function dataprocessor_civicrm_container(ContainerBuilder $container) {
   // Register the TypeFactory
-  $factoryDefinition = new Definition('Civi\DataProcessor\Factory');
-  $factoryDefinition->setPrivate(FALSE);
+  $factoryDefinition = DefinitionAdapter::createDefinitionClass('Civi\DataProcessor\Factory');
   $container->setDefinition('data_processor_factory', $factoryDefinition);
 
   $apiKernelDefinition = $container->getDefinition('civi_api_kernel');
-  $apiProviderDefinition = new Definition('Civi\DataProcessor\Output\Api');
-  $apiProviderDefinition->setPrivate(FALSE);
+  $apiProviderDefinition = DefinitionAdapter::createDefinitionClass('Civi\DataProcessor\Output\Api');
   $apiKernelDefinition->addMethodCall('registerApiProvider', array($apiProviderDefinition));
 
   // Add the data source for custom groups with multiple set.

@@ -6,10 +6,10 @@
 
 namespace Civi\DataProcessor\Source\CompilerPass;
 
+use Civi\DataProcessor\Symfony\Component\DependencyInjection\DefinitionAdapter;
 use CRM_Dataprocessor_ExtensionUtil as E;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
 
 class MultipleCustomGroupSource implements CompilerPassInterface {
 
@@ -29,8 +29,7 @@ class MultipleCustomGroupSource implements CompilerPassInterface {
           '\Civi\DataProcessor\Source\Contact\MultipleCustomGroupSource',
           [$dao->name, $dao->title, $dao->table_name],
         ];
-        $definition = new Definition('Civi\DataProcessor\Factory\Definition', $arguments);
-        $definition->setPrivate(FALSE);
+        $definition = DefinitionAdapter::createDefinitionClass('Civi\DataProcessor\Factory\Definition', $arguments);
         $factoryDefinition->addMethodCall('addDataSource', array('multi_custom_group_'.$dao->name, $definition, E::ts('Custom group: %1', [1=>$dao->title])));
       }
     } catch (\CiviCRM_API3_Exception $e) {
