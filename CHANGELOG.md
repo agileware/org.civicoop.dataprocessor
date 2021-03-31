@@ -1,4 +1,4 @@
-# Version 1.35 (not yet released)
+# Version 1.35
 
 * Fixed #87 Dataprocessors with required contact id filters throws "One of parameters (value: ) is not of the type Int" error for anonymous users by !77
 * Compatibility fix for Symfony 2.8, 3.4 and 4.0
