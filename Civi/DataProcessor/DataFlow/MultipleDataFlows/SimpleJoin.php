@@ -8,7 +8,9 @@ namespace Civi\DataProcessor\DataFlow\MultipleDataFlows;
 
 use Civi\DataProcessor\DataFlow\AbstractDataFlow;
 use Civi\DataProcessor\DataFlow\CombinedDataFlow\CombinedSqlDataFlow;
+use Civi\DataProcessor\DataFlow\CombinedDataFlow\SubqueryDataFlow;
 use Civi\DataProcessor\DataFlow\SqlDataFlow;
+use Civi\DataProcessor\DataFlow\SqlDataFlow\WhereClauseInterface;
 use Civi\DataProcessor\DataFlow\SqlTableDataFlow;
 use Civi\DataProcessor\DataSpecification\FieldExistsException;
 use Civi\DataProcessor\ProcessorType\AbstractProcessorType;
@@ -89,6 +91,11 @@ class SimpleJoin implements JoinInterface, SqlJoinInterface {
   protected $right_source;
 
   /**
+   * @var WhereClauseInterface[]
+   */
+  protected $filterClauses = array();
+
+  /**
    * @var String
    *   The join type, e.g. INNER, LEFT, OUT etc..
    */
@@ -110,6 +117,16 @@ class SimpleJoin implements JoinInterface, SqlJoinInterface {
     $this->right_prefix = $right_prefix;
     $this->right_field = $right_field;
     $this->type = $type;
+  }
+
+  /**
+   * @param WhereClauseInterface $clause
+   *
+   * @return \Civi\DataProcessor\DataFlow\MultipleDataFlows\JoinInterface
+   */
+  public function addFilterClause(WhereClauseInterface $clause) {
+    $this->filterClauses[] = $clause;
+    return $this;
   }
 
   /**
@@ -194,7 +211,7 @@ class SimpleJoin implements JoinInterface, SqlJoinInterface {
   public function processConfiguration($submittedValues, SourceInterface $joinFromSource) {
     $left_prefix = $joinFromSource->getSourceName();
     $left_field = $this->correctFieldName($submittedValues['left_field'], $joinFromSource);
-    list($right_prefix, $right_field) = explode("::",$submittedValues['right_field'], 2);
+    [$right_prefix, $right_field] = explode("::",$submittedValues['right_field'], 2);
 
     $configuration = array(
       'left_prefix' => $left_prefix,
@@ -448,7 +465,26 @@ class SimpleJoin implements JoinInterface, SqlJoinInterface {
       $tablePart = $sourceDataFlowDescription->getDataFlow()->getTableStatement();
     }
 
-    return "{$this->type} JOIN {$tablePart} {$joinClause} ";
+    $extraClause  = "";
+    $dataFlow = $sourceDataFlowDescription->getDataFlow();
+    if ($dataFlow  instanceof  SqlTableDataFlow) {
+      $whereClauses = $dataFlow->getWhereClauses();
+      foreach($whereClauses as $whereClause) {
+        if ($whereClause->isJoinClause() && $whereClause) {
+          $this->filterClauses[] = $whereClause;
+          $dataFlow->removeWhereClause($whereClause);
+        }
+      }
+    }
+    if (count($this->filterClauses)) {
+      $extraClauses = array();
+      foreach($this->filterClauses as $filterClause) {
+        $extraClauses[] = $filterClause->getWhereClause();
+      }
+      $extraClause = " AND (".implode(" AND ", $extraClauses). ")";
+    }
+
+    return "{$this->type} JOIN {$tablePart} {$joinClause} {$extraClause}";
   }
 
   public function getLeftTable() {
