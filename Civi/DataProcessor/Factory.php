@@ -104,7 +104,7 @@ class Factory {
     $this->addDataSource('group_contact_cache', new Definition('Civi\DataProcessor\Source\Group\SmartGroupContactSource'), E::ts('Contacts in a smart group'));
     $this->addDataSource('tag', new Definition('Civi\DataProcessor\Source\Tag\TagSource'), E::ts('Tag'));
     $this->addDataSource('entity_tag', new Definition('Civi\DataProcessor\Source\Tag\EntityTagSource'), E::ts('Entity Tag (Link between an entity and a tag)'));
-    $this->addDataSource('email', new Definition('Civi\DataProcessor\Source\Contact\EmailSource'), E::ts('E-mail'));
+    $this->addDataSource('email', new Definition('Civi\DataProcessor\Source\Contact\EmailSource'), E::ts('Email'));
     $this->addDataSource('address', new Definition('Civi\DataProcessor\Source\Contact\AddressSource'), E::ts('Address'));
     $this->addDataSource('phone', new Definition('Civi\DataProcessor\Source\Contact\PhoneSource'), E::ts('Phone'));
     $this->addDataSource('website', new Definition('Civi\DataProcessor\Source\Contact\WebsiteSource'), E::ts('Website'));
