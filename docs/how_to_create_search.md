@@ -3,7 +3,7 @@
 - [Create the data processor](#create-the-data-processor)
 - [Add the data sources](#add-the-data-sources)
   * [Add a data source for the household member](#add-a-data-source-for-the-household-member)
-  * [Add a data source for the e-mail address of the household member](#add-a-data-source-for-the-e-mail-address-of-the-household-member)
+  * [Add a data source for the email address of the household member](#add-a-data-source-for-the-email-address-of-the-household-member)
   * [Add the Relationship data source](#add-the-relationship-data-source)
   * [Add the Household data source](#add-the-household-data-source)
   * [Add the address data source](#add-the-address-data-source)
@@ -15,9 +15,9 @@
 - [Start using the search](#start-using-the-search)
 
 In this tutorial we are going to create a search action. We search all people who have an active relationship with a household.
-We will show the name, e-mailaddress of the person and we will show the name and address of the household.
+We will show the name, email address of the person and we will show the name and address of the household.
 
-We will also add an additional filter to the search so the user can search on gender and/or birth date.
+We will also add a filter to the search so the user can search on gender and/or birth date.
 
 Our search will look like as follows:
 
@@ -51,35 +51,35 @@ This is how our data source should look like:
 
 ![screenshot 2](images/howto_create_search_2.png)
 
-### Add a data source for the e-mail address of the household member
+### Add a data source for the email address of the household member
 
-Now it is time to add a data source to retrieve the e-mail address of the household member.
+Now it is time to add a data source to retrieve the email address of the household member.
 Press *Add data source*
 
-Select as type *E-mail* and give it a title such as *E-mail*.
-Leave the filter criteria to use the primary e-mail address.
-At the join section we will link this E-mail data source the *Household Member* data source.
+Select as type *Email* and give it a title such as *Email*.
+Leave the filter criteria to use the primary email address.
+At the join section we will link this email data source the *Household Member* data source.
 
 Select at the *Select fields to join on (not required)* as Join Type. And select
 *Email Contact* = *Household Member :: Contact ID* as join fields.
 
 Press *Save*.
 
-This is how the e-mail data source should look like:
+This is how the email data source should look like:
 
 ![screenshot 3](images/howto_create_search_3.png)
 
 **What is a join?**
 
-A  join connects two data sources to each other. In the example above we link the e-mail to the individual. We did this \
-with the field *Email Contact* -  which is a field on the CiviCRM E-mail entity which holds the contact id - and we link it the Contact ID
+A  join connects two data sources to each other. In the example above we link the email to the individual. We did this \
+with the field *Email Contact* -  which is a field on the CiviCRM Email entity which holds the contact id - and we link it the Contact ID
 of the *Household Member*.
 
 **What does 'Select fields to join on (not required)' mean?**
 
-This means that the data processor tries to link an e-mail address to the household member, but what if the household member
-does not have an e-mail address? The not required means in this case the household member still appears in our data set but with an
-empty e-mail address.
+This means that the data processor tries to link an email address to the household member, but what if the household member
+does not have an email address? The not required means in this case the household member still appears in our data set but with an
+empty email address.
 
 ### Add the Relationship data source
 
@@ -142,10 +142,10 @@ The address data source should look like:
 
 We want to add the following fields:
 
-* Contact ID of the household member; we need this field so that the user can select the contact to perform actions on it e.g. Send an e-mail or add to an group.
+* Contact ID of the household member; we need this field so that the user can select the contact to perform actions on it e.g. Send an email or add to an group.
 * Name of the household member
 * Household name
-* E-mail address of the household member
+* Email address of the household member
 * Gender
 * Birth date
 * Address
@@ -160,7 +160,7 @@ Press *Add Field* and select *Household Member :: Display name* and give it the 
 
 Press *Add Field* and select *Household :: Display name* and give it the title *Household*.
 
-Press *Add Field* and select *E-mail :: Email* and give it the tThe filters which thitle *E-mail address*.
+Press *Add Field* and select *Email :: Email* and give it the title *Email address*.
 
 Press *Add Field* and select *Household Member :: Gender (Option)* and give it the title *Gender*.
 
