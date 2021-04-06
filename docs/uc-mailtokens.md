@@ -38,13 +38,13 @@ You should now have a list of fields like this:
 
 Those are the required fields. Since we don't need any sorting or more filters (we've done those on the datasources), we can now continue with the output. 
 
-Note: the title you give to each field is the name of the token such as it will appear in the tokenlist when writing an email or email template!
+Note: the title you give to each field is the name of the token such as it will appear in the token list when writing an email or email template!
 
 
 ### Output (Tokens)
 The output we're creating is "Tokens" that can be used by any user of this CiviCRM install to add to manual-, automated- or bulkmail.
 1. Go to the Output part of the Dataprocessor and choose "Add Output"
-1. From the "Select output*" dropdown, select "Tokens" (which will only be available if you have isntalled the The Data Processor Token Output extension  (	https://lab.civicrm.org/extensions/dataprocessor-token-output)
+1. From the "Select output*" dropdown, select "Tokens" (which will only be available if you have installed the Data Processor Token Output extension  (	https://lab.civicrm.org/extensions/dataprocessor-token-output)
 1. Define the Contact ID field, i.e. in this situation the contact the mail with these tokens will be sent to: "Activity contact::Contact ID (match to contact)"
 1. Hidden fields - select the Activity ID and the Contact ID (match to contact) since we don't need those as tokens (but for searches based on this dataprocessor so as to check that all works as expected)
 1. No sorting required
@@ -58,7 +58,7 @@ Note: once saved, the tokens will be available for selection on the appropriate 
 
 ### Output (Search)
 To make sure that I have defined all properly, I usually also create a Search output so that I can check in CiviCRM that my dataprocessor does what I expect it to do. 
-1. Add a second output, but this time select "Activity Search" from the Select output dropwdown. 
+1. Add a second output, but this time select "Activity Search" from the Select output drop down. 
 1. Add the Search form to a Parent menu in CiviCRM
 1. Define the permission, the default is perfect. 
 1. The ID field here would be the Activity ID
