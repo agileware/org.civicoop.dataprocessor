@@ -46,7 +46,7 @@ class CRM_DataprocessorOutputExport_CSV extends CRM_DataprocessorOutputExport_Ab
     if ($configuration && isset($configuration['delimiter']) && $configuration['delimiter']) {
       $defaults['delimiter'] = $configuration['delimiter'];
     } else {
-      $defaults['delimiter'] = ';';
+      $defaults['delimiter'] = ',';
     }
     if ($configuration && isset($configuration['enclosure']) && $configuration['enclosure']) {
       $defaults['enclosure'] = $configuration['enclosure'];
