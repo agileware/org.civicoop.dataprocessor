@@ -1,5 +1,7 @@
 # Version 1.36 (not yet released)
 
+* Data Processor, inconsistent use of "e-mail" and "email", use the CiviCRM standard "email" by !79
+
 # Version 1.35
 
 * Fixed #87 Dataprocessors with required contact id filters throws "One of parameters (value: ) is not of the type Int" error for anonymous users by !77
