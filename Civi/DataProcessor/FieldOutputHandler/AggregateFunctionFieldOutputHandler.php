@@ -84,7 +84,7 @@ class AggregateFunctionFieldOutputHandler extends AbstractSimpleSortableFieldOut
   public function initialize($alias, $title, $configuration) {
     $this->dataSource = $this->dataProcessor->getDataSourceByName($configuration['datasource']);
     if (!$this->dataSource) {
-      throw new DataSourceNotFoundException(E::ts("Field %1 requires data source '%2' which could not be found. Did you rename or deleted the data source?", array(1=>$alias, 2=>$configuration['datasource'])));
+      throw new DataSourceNotFoundException(E::ts("Field %1 requires data source '%2' which could not be found. Did you rename or delete the data source?", array(1=>$alias, 2=>$configuration['datasource'])));
     }
 
     $this->inputFieldSpec = $this->dataSource->getAvailableFields()->getFieldSpecificationByAlias($configuration['field']);

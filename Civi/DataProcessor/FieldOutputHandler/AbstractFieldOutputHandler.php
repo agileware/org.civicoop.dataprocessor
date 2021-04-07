@@ -91,7 +91,7 @@ abstract class AbstractFieldOutputHandler {
   protected function initializeField($fieldAlias, $datasourceName, $newAlias='') {
     $dataSource = $this->dataProcessor->getDataSourceByName($datasourceName);
     if (!$dataSource) {
-      throw new DataSourceNotFoundException(E::ts("Field %1 requires data source '%2' which could not be found. Did you rename or deleted the data source?", array(1=>$newAlias, 2=>$datasourceName)));
+      throw new DataSourceNotFoundException(E::ts("Field %1 requires data source '%2' which could not be found. Did you rename or delete the data source?", array(1=>$newAlias, 2=>$datasourceName)));
     }
     $inputFieldSpec = $dataSource->getAvailableFields()->getFieldSpecificationByAlias($fieldAlias);
     if (!$inputFieldSpec) {
