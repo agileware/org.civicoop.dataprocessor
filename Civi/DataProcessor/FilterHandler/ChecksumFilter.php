@@ -61,7 +61,7 @@ class ChecksumFilter extends AbstractFieldFilterHandler {
   protected function initializeHashField($datasource_name, $field_name) {
     $this->hashDataSource = $this->data_processor->getDataSourceByName($datasource_name);
     if (!$this->hashDataSource) {
-      throw new DataSourceNotFoundException(E::ts("Filter %1 requires data source '%2' which could not be found. Did you rename or deleted the data source?", array(1=>$this->title, 2=>$datasource_name)));
+      throw new DataSourceNotFoundException(E::ts("Filter %1 requires data source '%2' which could not be found. Did you rename or delete the data source?", array(1=>$this->title, 2=>$datasource_name)));
     }
     $this->hashInputFieldSpecification = $this->hashDataSource->getAvailableFilterFields()->getFieldSpecificationByAlias($field_name);
     if (!$this->hashInputFieldSpecification) {

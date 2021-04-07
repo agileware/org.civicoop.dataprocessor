@@ -55,7 +55,7 @@ class MultipleFieldFilter extends AbstractFilterHandler {
   protected function initializeField($datasource_name, $field_name) {
     $dataSource = $this->data_processor->getDataSourceByName($datasource_name);
     if (!$dataSource) {
-      throw new DataSourceNotFoundException(E::ts("Filter %1 requires data source '%2' which could not be found. Did you rename or deleted the data source?", array(1=>$this->title, 2=>$datasource_name)));
+      throw new DataSourceNotFoundException(E::ts("Filter %1 requires data source '%2' which could not be found. Did you rename or delete the data source?", array(1=>$this->title, 2=>$datasource_name)));
     }
     $fieldSpecification = $dataSource->getAvailableFilterFields()->getFieldSpecificationByAlias($field_name);
     if (!$fieldSpecification) {

@@ -325,7 +325,7 @@ class CRM_Contact_DataProcessorContactSummaryTab implements UIFormOutputInterfac
     [$datasource_name, $field_name] = explode('::', $output['configuration']['contact_id_field'], 2);
     $dataSource = $dataProcessorClass->getDataSourceByName($datasource_name);
     if (!$dataSource) {
-      throw new \Civi\DataProcessor\Exception\DataSourceNotFoundException(E::ts("Requires data source '%1' which could not be found. Did you rename or deleted the data source?", array(1=>$datasource_name)));
+      throw new \Civi\DataProcessor\Exception\DataSourceNotFoundException(E::ts("Requires data source '%1' which could not be found. Did you rename or delete the data source?", array(1=>$datasource_name)));
     }
     $fieldSpecification  =  $dataSource->getAvailableFilterFields()->getFieldSpecificationByAlias($field_name);
     if (!$fieldSpecification) {
