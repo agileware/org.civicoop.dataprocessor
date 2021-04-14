@@ -2,6 +2,7 @@
 
 * Inconsistent use of "e-mail" and "email", use the CiviCRM standard "email" by !79
 * Default delimiter for CSV export is semi-colon, not comma by !81
+* Fixed issue with participant payment
 
 # Version 1.35
 

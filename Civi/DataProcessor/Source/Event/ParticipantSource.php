@@ -96,6 +96,23 @@ class ParticipantSource extends AbstractCivicrmEntitySource implements AlterExpo
   }
 
   /**
+   * Ensures a field is in the data source
+   *
+   * @param \Civi\DataProcessor\DataSpecification\FieldSpecification $fieldSpecification
+   *
+   * @throws \Exception
+   */
+  public function ensureFieldInSource(FieldSpecification $fieldSpecification) {
+    if ($fieldSpecification->name == 'contribution_id') {
+      $this->initializeParticipantPayment();
+      $this->participantPaymentDataFlow->getDataSpecification()->addFieldSpecification($fieldSpecification->alias, $fieldSpecification);
+    } else {
+      parent::ensureFieldInSource($fieldSpecification);
+    }
+  }
+
+
+  /**
    * Function to alter the export data.
    * E.g. use this to convert ids to names
    *
