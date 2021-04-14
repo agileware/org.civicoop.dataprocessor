@@ -1,12 +1,9 @@
-# Version 1.37 (not yet released)
-
-* Ability to return contact as array in relashionship type
-
 # Version 1.36 (not yet released)
 
 * Inconsistent use of "e-mail" and "email", use the CiviCRM standard "email" by !79
 * Default delimiter for CSV export is semi-colon, not comma by !81
 * Fixed issue with participant payment
+* Ability to return contact as array in relashionship type by !84
 
 # Version 1.35
 
