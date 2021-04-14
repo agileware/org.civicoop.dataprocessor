@@ -1,3 +1,5 @@
+# Version 1.37 (not yet released)
+
 # Version 1.36
 
 * Inconsistent use of "e-mail" and "email", use the CiviCRM standard "email" by !79
