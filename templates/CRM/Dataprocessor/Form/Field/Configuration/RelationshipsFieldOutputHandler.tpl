@@ -36,6 +36,11 @@
       <div class="clear"></div>
     </div>
     <div class="crm-section">
+      <div class="label"></div>
+      <div class="content">{$form.return_as_array.html} {$form.return_as_array.label}</div>
+      <div class="clear"></div>
+    </div>
+    <div class="crm-section">
       <div class="label">{$form.sort.label}</div>
       <div class="content">{$form.sort.html}</div>
       <div class="clear"></div>

@@ -43,6 +43,8 @@ class RelationshipsFieldOutputHandler extends AbstractFieldOutputHandler {
 
   protected $show_label = true;
 
+  protected $return_as_array = false;
+
   protected $separator = ', ';
 
   protected $sort = 'label-name';
@@ -92,6 +94,9 @@ class RelationshipsFieldOutputHandler extends AbstractFieldOutputHandler {
     }
     if (isset($configuration['show_label'])) {
       $this->show_label = $configuration['show_label'];
+    }
+    if (isset($configuration['return_as_array'])) {
+      $this->return_as_array = $configuration['return_as_array'];
     }
     if (isset($configuration['separator'])) {
       $this->separator = $configuration['separator'];
@@ -146,6 +151,8 @@ class RelationshipsFieldOutputHandler extends AbstractFieldOutputHandler {
     }
     $formattedValues = [];
     $htmlFormattedValues = [];
+    $output = new HTMLFieldOutput($contactId);
+
     if (count($sqlStatements)) {
       $sql = implode(" UNION ", $sqlStatements);
       switch ($this->sort) {
@@ -164,6 +171,7 @@ class RelationshipsFieldOutputHandler extends AbstractFieldOutputHandler {
       }
       $sqlParams[1] = [$contactId, 'Integer'];
       $dao = \CRM_Core_DAO::executeQuery($sql, $sqlParams);
+
       while ($dao->fetch()) {
         $url = \CRM_Utils_System::url('civicrm/contact/view', [
           'reset' => 1,
@@ -171,18 +179,32 @@ class RelationshipsFieldOutputHandler extends AbstractFieldOutputHandler {
         ]);
         $link = '<a href="' . $url . '">' . $dao->display_name . '</a>';
         $image = \CRM_Contact_BAO_Contact_Utils::getImage($dao->contact_sub_type ? $dao->contact_sub_type : $dao->contact_type,  FALSE, $dao->id);
-        if ($this->show_label) {
-          $htmlFormattedValues[] = $image .'&nbsp;' . $dao->label . ':&nbsp;' . $link;
-          $formattedValues[] = $dao->label.': '.$dao->display_name;
-        }
-        else {
-          $htmlFormattedValues[] = $image .'&nbsp;' . $link;
-          $formattedValues[] = $dao->display_name;
+        $htmlFormattedValues[] = $image .'&nbsp;' . $this->show_label ? $dao->label . ':&nbsp;' : '' . $link;
+        if ($this->return_as_array) {
+          $formattedValues[] = array(
+            'label'             => $dao->label,
+            'display_name'      => $dao->display_name,
+            'birth_date'        => $dao->birth_date,
+            'contact_id'        => $dao->id,
+            'contact_type'      => $dao->contact_type,
+            'contact_sub_type'  => $dao->contact_sub_type,
+            'image'             => $image
+          );
+        } else {
+          if ($this->show_label) {
+            $formattedValues[] = $dao->label.': '.$dao->display_name;
+          }
+          else {
+            $formattedValues[] = $dao->display_name;
+          }
         }
       }
     }
-    $output = new HTMLFieldOutput($contactId);
-    $output->formattedValue = implode($this->separator, $formattedValues);
+    if ($this->return_as_array) {
+      $output->formattedValue = $formattedValues;
+    } else {
+      $output->formattedValue = implode($this->separator, $formattedValues);
+    }
     $output->setHtmlOutput(implode("<br>", $htmlFormattedValues));
     return $output;
   }
@@ -245,6 +267,7 @@ class RelationshipsFieldOutputHandler extends AbstractFieldOutputHandler {
     }
 
     $form->add('checkbox', 'show_label', E::ts('Show relationship type'), false, false);
+    $form->add('checkbox', 'return_as_array', E::ts('Return as array'), false, false);
     $form->add('checkbox', 'include_deceased', E::ts('Include deceased'), false, false);
     $form->add('text', 'separator', E::ts('Separator'), true);
     $form->add('select', 'sort', E::ts('Sort'), $sort, false, array(
@@ -270,6 +293,9 @@ class RelationshipsFieldOutputHandler extends AbstractFieldOutputHandler {
       }
       if (isset($configuration['separator'])) {
         $defaults['separator'] = $configuration['separator'];
+      }
+      if (isset($configuration['return_as_array'])) {
+        $defaults['return_as_array'] = $configuration['return_as_array'];
       }
       if (isset($configuration['sort'])) {
         $defaults['sort'] = $configuration['sort'];
@@ -309,6 +335,7 @@ class RelationshipsFieldOutputHandler extends AbstractFieldOutputHandler {
     $configuration['field'] = $field;
     $configuration['datasource'] = $datasource;
     $configuration['show_label'] = isset($submittedValues['show_label']) ? $submittedValues['show_label'] : 0;
+    $configuration['return_as_array'] = isset($submittedValues['return_as_array']) ? $submittedValues['return_as_array'] : 0;
     $configuration['separator'] = $submittedValues['separator'];
     $configuration['sort'] = $submittedValues['sort'];
     $configuration['include_deceased'] = isset($submittedValues['include_deceased']) ? $submittedValues['include_deceased'] : null;
