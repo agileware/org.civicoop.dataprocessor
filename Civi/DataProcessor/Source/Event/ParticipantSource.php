@@ -41,7 +41,7 @@ class ParticipantSource extends AbstractCivicrmEntitySource implements AlterExpo
   protected function initializeParticipantPayment() {
     if (!$this->participantPaymentDataFlow) {
       $this->participantPaymentDataFlow = new SqlTableDataFlow('civicrm_participant_payment', $this->getSourceName().'_participant_payment');
-      DataSpecificationUtils::addDAOFieldsToDataSpecification('CRM_Event_DAO_ParticipantPayment', $this->participantPaymentDataFlow->getDataSpecification(), array('id'), '', 'participant_payment_', E::ts('Participant Payment :: '));
+      DataSpecificationUtils::addDAOFieldsToDataSpecification('CRM_Event_DAO_ParticipantPayment', $this->participantPaymentDataFlow->getDataSpecification(), array('id'), '', $this->getSourceName() . '_participant_payment_', E::ts('Participant Payment :: '));
     }
     if (!isset($this->additionalDataFlowDescriptions['civicrm_participant_payment']) && $this->primaryDataFlow != $this->participantPaymentDataFlow) {
       $this->participantPaymentJoin = new SimpleJoin($this->getSourceName(), 'id', $this->participantPaymentDataFlow->getName(), 'participant_id', 'LEFT');
