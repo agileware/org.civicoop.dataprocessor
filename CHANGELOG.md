@@ -1,6 +1,6 @@
 # Version 1.37 (not yet released)
 
-* Fixed #91. Data Processor, SQL error - Duplicate column name 'participant_payment_participant_id' when a Data Processor is configured to use two or more Pariticipant Sources by !85
+* Fixed #91. Duplicate column name 'participant_payment_participant_id' when a Data Processor is configured to use two or more Pariticipant Sources by !85
 
 # Version 1.36
 
