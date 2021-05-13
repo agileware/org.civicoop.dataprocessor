@@ -12,7 +12,7 @@ class CRM_DataprocessorSearch_Utils_PrevNextCache {
    * @param int $id
    * @param string $cacheKey
    */
-  public function deleteItem($id = NULL, $cacheKey = NULL) {
+  public static function deleteItem($id = NULL, $cacheKey = NULL) {
     if (Civi::container()->has('prevnext')) {
       return Civi::service('prevnext')->deleteItem($id, $cacheKey);
     } else {
@@ -73,7 +73,7 @@ class CRM_DataprocessorSearch_Utils_PrevNextCache {
    *
    * @return array|NULL
    */
-  public function getSelection($cacheKey, $action = 'get') {
+  public static function getSelection($cacheKey, $action = 'get') {
     if (Civi::container()->has('prevnext')) {
       return Civi::service('prevnext')->getSelection($cacheKey, $action);
     } else {
