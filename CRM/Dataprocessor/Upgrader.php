@@ -34,4 +34,14 @@ class CRM_Dataprocessor_Upgrader extends CRM_Dataprocessor_Upgrader_Base {
     return TRUE;
   }
 
+  /**
+   * Rename field type calculations_percentage to calculations_percentage_change
+   *
+   * @return bool
+   */
+  public function upgrade_1002() {
+    CRM_Core_DAO::executeQuery("UPDATE `civicrm_data_processor_field` SET `type`='calculations_percentage_change' WHERE `type` = 'calculations_percentage';");
+    return TRUE;
+  }
+
 }

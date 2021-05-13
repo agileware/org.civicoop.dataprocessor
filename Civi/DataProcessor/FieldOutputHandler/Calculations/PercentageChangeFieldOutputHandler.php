@@ -14,7 +14,7 @@ use Civi\DataProcessor\FieldOutputHandler\FieldOutput;
 
 use CRM_Dataprocessor_ExtensionUtil as E;
 
-class PercentageFieldOutputHandler extends CalculationFieldOutputHandler {
+class PercentageChangeFieldOutputHandler extends CalculationFieldOutputHandler {
 
   /**
    * @param array $rawRecord ,

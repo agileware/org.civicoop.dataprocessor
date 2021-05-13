@@ -1,5 +1,6 @@
 # Version 1.37 (not yet released)
 
+* Fixed #94. Renamed the calculation Percentage to Percentage change (to avoid confusion).
 * Fixed #91. Duplicate column name 'participant_payment_participant_id' when a Data Processor is configured to use two or more Pariticipant Sources by !85
 
 # Version 1.36
