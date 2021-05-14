@@ -14,7 +14,7 @@ use Civi\DataProcessor\FieldOutputHandler\FieldOutput;
 
 use CRM_Dataprocessor_ExtensionUtil as E;
 
-class PercentageFieldOutputHandler extends CalculationFieldOutputHandler {
+class PercentageChangeFieldOutputHandler extends CalculationFieldOutputHandler {
 
   /**
    * @param array $rawRecord ,
@@ -36,7 +36,7 @@ class PercentageFieldOutputHandler extends CalculationFieldOutputHandler {
   protected function getFieldSelectConfigurations() {
     return array(
       ['title' => E::ts('Base Field (100% value)'), 'multiple' => false],
-      ['title' => E::ts('Percentage Field'), 'multiple' => false],
+      ['title' => E::ts('New value Field'), 'multiple' => false],
     );
   }
 
