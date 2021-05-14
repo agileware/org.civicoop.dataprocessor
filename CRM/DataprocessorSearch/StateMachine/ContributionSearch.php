@@ -23,7 +23,7 @@ class CRM_DataprocessorSearch_StateMachine_ContributionSearch extends CRM_Core_S
     parent::__construct($controller, $action);
 
     $this->_pages = array();
-    $this->_pages['Basic'] = array(
+    $this->_pages['Search'] = array(
       'className' => 'CRM_DataprocessorSearch_Form_ContributionSearch',
     );
     list($task, $result) = $this->taskName($controller);
