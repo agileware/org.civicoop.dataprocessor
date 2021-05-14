@@ -42,6 +42,13 @@ class FieldSpecification implements SqlFieldSpecification {
   protected $multiValueField = false;
 
   /**
+   *  the SQL orderby expression
+   *
+   * @var string
+   */
+  protected $sqlOrderBy = null;
+
+  /**
    * @var null|String
    */
   protected $sqlValueFormatFunction = null;
@@ -163,6 +170,20 @@ class FieldSpecification implements SqlFieldSpecification {
    */
   public function setMultiValueField($value) {
     $this->multiValueField = $value ? true : false;
+  }
+
+  /**
+   * @return string
+   */
+  public function getSqlOrderBy() {
+    return $this->sqlOrderBy ?? "`{$this->alias}`";
+  }
+
+  /**
+   * @param string $sqlOrderBy
+   */
+  public function setSqlOrderBy($sqlOrderBy) {
+    $this->sqlOrderBy = $sqlOrderBy;
   }
 
 }

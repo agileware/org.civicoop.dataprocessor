@@ -7,11 +7,6 @@
 namespace Civi\DataProcessor\FieldOutputHandler\Calculations;
 
 use Civi\DataProcessor\DataSpecification\FieldSpecification;
-use Civi\DataProcessor\Exception\DataSourceNotFoundException;
-use Civi\DataProcessor\Exception\FieldNotFoundException;
-use Civi\DataProcessor\FieldOutputHandler\AbstractFieldOutputHandler;
-use Civi\DataProcessor\FieldOutputHandler\FieldOutput;
-
 use CRM_Dataprocessor_ExtensionUtil as E;
 
 class PercentageChangeFieldOutputHandler extends CalculationFieldOutputHandler {
@@ -55,6 +50,21 @@ class PercentageChangeFieldOutputHandler extends CalculationFieldOutputHandler {
         'suffix' => '%'
       ]);
     }
+  }
+
+  /**
+   * @return \Civi\DataProcessor\DataSpecification\FieldSpecification
+   */
+  public function getSortableInputFieldSpec() {
+    $fieldSpec = new FieldSpecification($this->getOutputFieldSpecification()
+      ->getName(),
+      'String',
+      $this->getOutputFieldSpecification()->title
+    );
+    $expression100 =  "`{$this->inputFieldSpecs[0]->alias}`";
+    $expressionOff =  "(`{$this->inputFieldSpecs[1]->alias}`-{$expression100})";
+    $fieldSpec->setSqlOrderBy("(100 * $expressionOff / $expression100 )");
+    return $fieldSpec;
   }
 
 
