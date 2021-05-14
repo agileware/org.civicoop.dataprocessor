@@ -6,7 +6,7 @@
 
 namespace Civi\DataProcessor\FieldOutputHandler\Calculations;
 
-use Civi\DataProcessor\FieldOutputHandler\FieldOutput;
+use Civi\DataProcessor\DataSpecification\FieldSpecification;
 
 class TotalFieldOutputHandler extends CalculationFieldOutputHandler {
 
@@ -25,6 +25,23 @@ class TotalFieldOutputHandler extends CalculationFieldOutputHandler {
       $value = $value + $v;
     }
     return $value;
+  }
+
+  /**
+   * @return \Civi\DataProcessor\DataSpecification\FieldSpecification
+   */
+  public function getSortableInputFieldSpec() {
+    $fieldSpec = new FieldSpecification($this->getOutputFieldSpecification()
+      ->getName(),
+      'String',
+      $this->getOutputFieldSpecification()->title
+    );
+    $terms = [];
+    foreach ($this->inputFieldSpecs[0] as $inputFieldSpec) {
+      $terms[] = "`{$inputFieldSpec->alias}`";
+    }
+    $fieldSpec->setSqlOrderBy('(' . implode('+', $terms) . ')');
+    return $fieldSpec;
   }
 
 }

@@ -1,6 +1,7 @@
 # Version 1.37 (not yet released)
 
 * Fixed #94. Renamed the calculation Percentage to Percentage change (to avoid confusion).
+* Make the totals (calculations that add up) and percentages sortable.
 * Fixed #91. Duplicate column name 'participant_payment_participant_id' when a Data Processor is configured to use two or more Pariticipant Sources by !85
 * Fixed issue with Participant and Contribution Searches by !87
 

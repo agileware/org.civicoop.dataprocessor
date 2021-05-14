@@ -28,6 +28,15 @@ interface SqlFieldSpecification {
   public function getSqlGroupByStatement($table_alias);
 
   /**
+   * Returns the order by statement for this field
+   * Often this will be just the field, but for calculations it can
+   * be something else
+   *
+   * @return String
+   */
+  public function getSqlOrderBy();
+
+  /**
    * Returns the SQL column name for this field.
    * This could be used in join statements
    *

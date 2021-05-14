@@ -316,8 +316,8 @@ abstract class SqlDataFlow extends AbstractDataFlow {
           break;
       }
       if ($sortSpecification->getField()) {
-        $fieldName = $sortSpecification->getField()->alias;
-        $orderBys[] = "`{$fieldName}` {$dir}";
+        $orderBy = $sortSpecification->getField()->getSqlOrderBy();
+        $orderBys[] = "{$orderBy} {$dir}";
       }
     }
     if (count($orderBys)) {
@@ -329,7 +329,7 @@ abstract class SqlDataFlow extends AbstractDataFlow {
   /**
    * Returns debug information
    *
-   * @return string
+   * @return array
    */
   public function getDebugInformation() {
     return array(
