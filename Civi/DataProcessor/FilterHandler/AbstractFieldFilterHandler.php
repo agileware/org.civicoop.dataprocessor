@@ -119,4 +119,10 @@ abstract class AbstractFieldFilterHandler extends AbstractFilterHandler {
     }
   }
 
+  protected function getOperatorOptions(\Civi\DataProcessor\DataSpecification\FieldSpecification $fieldSpec) {
+    return array(
+      '=' => E::ts('Is equal to'),
+    );
+  }
+
 }
