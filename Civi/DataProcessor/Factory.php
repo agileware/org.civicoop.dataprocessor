@@ -145,6 +145,7 @@ class Factory {
     $this->addFilter('date_filter', new Definition('Civi\DataProcessor\FilterHandler\DateFilter'), E::ts('Date filter'));
     $this->addFilter('date_month_filter', new Definition('Civi\DataProcessor\FilterHandler\DateMonthFilter'), E::ts('Month filter'));
     $this->addFilter('multiple_field_filter', new Definition('Civi\DataProcessor\FilterHandler\MultipleFieldFilter'), E::ts('Text in multiple fields Filter'));
+    $this->addFilter('compare_filter', new Definition('Civi\DataProcessor\FilterHandler\CompareFieldFilter'), E::ts('Compare two fields'));
     $this->addFilter('activity_filter', new Definition('Civi\DataProcessor\FilterHandler\ActivityFilter'), E::ts('Activity filter'));
     $this->addFilter('event_filter', new Definition('Civi\DataProcessor\FilterHandler\EventFilter'), E::ts('Event filter'));
     $this->addFilter('checksum_filter', new Definition('Civi\DataProcessor\FilterHandler\ChecksumFilter'), E::ts('Checksum filter'));
