@@ -256,8 +256,8 @@ class CompareFieldFilter extends AbstractFieldFilterHandler {
       '<>' => E::ts('Is not equal'),
       '>' => E::ts('Is greater than'),
       '>=' => E::ts('Is greater than or equal to'),
-      '<' => E::ts('Is les than'),
-      '<=' => E::ts('Is les than or equal to'),
+      '<' => E::ts('Is less than'),
+      '<=' => E::ts('Is less than or equal to'),
     );
   }
 
