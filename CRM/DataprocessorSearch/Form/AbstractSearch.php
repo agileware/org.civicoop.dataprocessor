@@ -308,6 +308,11 @@ abstract class CRM_DataprocessorSearch_Form_AbstractSearch extends CRM_Dataproce
       }
       $this->dataProcessorClass->getDataFlow()->resetSort();
       $this->dataProcessorClass->getDataFlow()->addSort($sortField['name'], $sortDirection);
+      if ($id_field && $id_field != $sortField['name']) {
+        $this->dataProcessorClass->getDataFlow()->addSort($id_field, 'ASC');
+      }
+    } elseif ($id_field) {
+      $this->dataProcessorClass->getDataFlow()->addSort($id_field, 'ASC');
     }
 
     $this->alterDataProcessor($this->dataProcessorClass);

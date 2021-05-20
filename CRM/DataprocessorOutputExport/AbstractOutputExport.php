@@ -52,7 +52,7 @@ abstract class CRM_DataprocessorOutputExport_AbstractOutputExport implements Exp
    * @return int
    */
   protected function getMaxDirectDownload() {
-    return 1;
+    return 50;
   }
 
   /**
@@ -62,7 +62,7 @@ abstract class CRM_DataprocessorOutputExport_AbstractOutputExport implements Exp
    * @return int
    */
   protected function getJobSize() {
-    return 1;
+    return 50;
   }
 
   /**
@@ -262,6 +262,11 @@ abstract class CRM_DataprocessorOutputExport_AbstractOutputExport implements Exp
     if ($sortFieldName) {
       $dataProcessorClass->getDataFlow()->resetSort();
       $dataProcessorClass->getDataFlow()->addSort($sortFieldName, $sortDirection);
+      if ($idField && $idField != $sortFieldName) {
+        $dataProcessorClass->getDataFlow()->addSort($idField, 'ASC');
+      }
+    } elseif ($idField) {
+      $dataProcessorClass->getDataFlow()->addSort($idField, 'ASC');
     }
     $dataProcessorClass->getDataFlow()->setOffset($offset);
     $dataProcessorClass->getDataFlow()->setLimit($limit);

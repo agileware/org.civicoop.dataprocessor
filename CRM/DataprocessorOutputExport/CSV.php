@@ -130,7 +130,7 @@ class CRM_DataprocessorOutputExport_CSV extends CRM_DataprocessorOutputExport_Ab
   }
 
   protected function createHeader($filename, \Civi\DataProcessor\ProcessorType\AbstractProcessorType $dataProcessorClass, $configuration, $dataProcessor, $idField=null, $selectedIds=array()) {
-    $file = fopen($filename. '.'.$this->getExtension(), 'a');
+    $file = fopen($filename. '.'.$this->getExtension(), 'w');
     fwrite($file, "\xEF\xBB\xBF"); // BOF this will make sure excel opens the file correctly.
     $headerLine = array();
     foreach($dataProcessorClass->getDataFlow()->getOutputFieldHandlers() as $outputHandler) {

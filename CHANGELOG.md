@@ -5,6 +5,7 @@
 * Make the totals (calculations that add up) and percentages sortable.
 * Fixed #91. Duplicate column name 'participant_payment_participant_id' when a Data Processor is configured to use two or more Pariticipant Sources by !85
 * Fixed issue with Participant and Contribution Searches by !87
+* Fixed issue with sorting and limit. #95.
 
 # Version 1.36
 
