@@ -1,3 +1,5 @@
+# Version 1.38 (not yet released)
+
 # Version 1.37
 
 * Added filter to compare two fields.
