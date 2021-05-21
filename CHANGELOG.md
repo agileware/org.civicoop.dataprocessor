@@ -1,4 +1,4 @@
-# Version 1.37 (not yet released)
+# Version 1.37
 
 * Added filter to compare two fields.
 * Fixed #94. Renamed the calculation Percentage to Percentage change (to avoid confusion).
