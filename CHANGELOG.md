@@ -1,5 +1,7 @@
 # Version 1.38 (not yet released)
 
+* Fixed #96: use INNER JOIN on custom fields when a filter is set. 
+
 # Version 1.37.1
 
 * Fixed regression bug with operator options in the filter.

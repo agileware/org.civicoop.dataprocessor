@@ -310,6 +310,18 @@ abstract class AbstractCivicrmEntitySource extends AbstractSource {
         $customGroupDataFlow->addWhereClause(
           new SimpleWhereClause($customGroupTableAlias, $spec->customFieldColumnName, $op, $values, $spec->type, TRUE)
         );
+        switch ($op) {
+          case 'IN':
+          case '=':
+            // Change the custom fields join to INNER when the filter is a Is one of or Is equal
+            // Otherwise the custom fields will be included in the results but with an empty value.
+            // See: https://lab.civicrm.org/extensions/dataprocessor/-/issues/96
+            $join = $this->customGroupDataFlowDescriptions[$spec->customGroupName]->getJoinSpecification();
+            if ($join instanceof SqlJoinInterface) {
+              $join->setType('INNER');
+            }
+            break;
+        }
       } else {
         $this->ensureEntity();
         $tableAlias = $this->getEntityTableAlias();
@@ -504,7 +516,6 @@ abstract class AbstractCivicrmEntitySource extends AbstractSource {
         $dataFlow = $this->ensureCustomGroup($originalFieldSpecification->customGroupTableName, $originalFieldSpecification->customGroupName);
         if (!$dataFlow->getDataSpecification()->doesAliasExists($fieldSpecification->alias)) {
           $dataFlow->getDataSpecification()->addFieldSpecification($fieldSpecification->alias, $fieldSpecification);
-        } else {
         }
       } elseif ($originalFieldSpecification) {
         $this->ensureEntity();

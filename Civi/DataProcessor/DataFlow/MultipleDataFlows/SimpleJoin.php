@@ -120,6 +120,13 @@ class SimpleJoin implements JoinInterface, SqlJoinInterface {
   }
 
   /**
+   * @param $type
+   */
+  public function setType($type) {
+    $this->type = $type;
+  }
+
+  /**
    * @param WhereClauseInterface $clause
    *
    * @return \Civi\DataProcessor\DataFlow\MultipleDataFlows\JoinInterface

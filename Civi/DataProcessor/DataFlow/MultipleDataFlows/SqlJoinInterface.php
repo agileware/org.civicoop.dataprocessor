@@ -23,4 +23,12 @@ interface SqlJoinInterface {
    */
   public function getJoinClause(DataFlowDescription $sourceDataFlowDescription);
 
+  /**
+   * Set the type either be INNER, LEFT, RIGHT
+   *
+   * @param $type
+   * @return void
+   */
+  public function setType($type);
+
 }
