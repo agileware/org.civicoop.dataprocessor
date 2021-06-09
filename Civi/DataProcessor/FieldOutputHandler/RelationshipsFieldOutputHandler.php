@@ -137,14 +137,19 @@ class RelationshipsFieldOutputHandler extends AbstractFieldOutputHandler {
             INNER JOIN civicrm_relationship_type t on r.relationship_type_id = t.id
             WHERE c.is_deleted = 0 {$isDeceasedCond} AND r.is_active = 1 AND r.contact_id_b = %1";
 
+    $order = 1;
     if (count($this->relationship_type_ids)) {
-      $order = 1;
       foreach($this->relationship_type_ids as $rel_type) {
         if ($rel_type['dir'] == 'a_b') {
           $statement = $sql['a_b'] . " AND t.id = ".\CRM_Utils_Type::escape($rel_type['id'], 'Integer');
         } else {
           $statement = $sql['b_a'] . " AND t.id = ".\CRM_Utils_Type::escape($rel_type['id'], 'Integer');
         }
+        $sqlStatements[] = str_replace("'order' as `order`", "'{$order}' as `order`", $statement);
+        $order ++;
+      }
+    } else {
+      foreach($sql as $statement) {
         $sqlStatements[] = str_replace("'order' as `order`", "'{$order}' as `order`", $statement);
         $order ++;
       }
@@ -179,7 +184,7 @@ class RelationshipsFieldOutputHandler extends AbstractFieldOutputHandler {
         ]);
         $link = '<a href="' . $url . '">' . $dao->display_name . '</a>';
         $image = \CRM_Contact_BAO_Contact_Utils::getImage($dao->contact_sub_type ? $dao->contact_sub_type : $dao->contact_type,  FALSE, $dao->id);
-        $htmlFormattedValues[] = $image .'&nbsp;' . $this->show_label ? $dao->label . ':&nbsp;' : '' . $link;
+        $htmlFormattedValues[] = '<div class="clear">' . $image .'&nbsp;' . ($this->show_label ? $dao->label . ':&nbsp;' : '') . $link . '</div>';
         if ($this->return_as_array) {
           $formattedValues[] = array(
             'label'             => $dao->label,
@@ -205,7 +210,7 @@ class RelationshipsFieldOutputHandler extends AbstractFieldOutputHandler {
     } else {
       $output->formattedValue = implode($this->separator, $formattedValues);
     }
-    $output->setHtmlOutput(implode("<br>", $htmlFormattedValues));
+    $output->setHtmlOutput(implode("\r\n", $htmlFormattedValues));
     return $output;
   }
 

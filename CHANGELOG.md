@@ -1,5 +1,7 @@
 # Version 1.39 (not yet released)
 
+* Improvement of the layout of the relationship output handler.
+
 # Version 1.38
 
 * Fixed #96: use INNER JOIN on custom fields when a filter is set.
