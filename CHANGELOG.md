@@ -1,6 +1,7 @@
-# Version 1.38 (not yet released)
+# Version 1.38
 
-* Fixed #96: use INNER JOIN on custom fields when a filter is set. 
+* Fixed #96: use INNER JOIN on custom fields when a filter is set.
+* Fixes issue with Relationship output field handler.
 
 # Version 1.37.1
 

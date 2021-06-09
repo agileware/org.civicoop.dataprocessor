@@ -234,8 +234,8 @@ class RelationshipsFieldOutputHandler extends AbstractFieldOutputHandler {
     $relationshipTypes = [];
 
     foreach ($relationshipTypeApi['values'] as $relationship_type) {
-      $relationshipTypes['a_b_' . $relationship_type['name_a_b']] = $relationship_type['label_a_b'];
-      $relationshipTypes['b_a_' . $relationship_type['name_b_a']] = $relationship_type['label_b_a'];
+      $relationshipTypes['a_b_' . $relationship_type['name_a_b']] = $relationship_type['label_a_b'] . ' ' . E::ts('(A - B)');
+      $relationshipTypes['b_a_' . $relationship_type['name_b_a']] = $relationship_type['label_b_a'] . ' ' . E::ts('(B - A)');
     }
     if (isset($field['configuration']) && isset($field['configuration']['relationship_types'])) {
       foreach (array_reverse($field['configuration']['relationship_types']) as $rel_type) {
