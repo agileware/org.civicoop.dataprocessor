@@ -1,6 +1,7 @@
 # Version 1.39 (not yet released)
 
 * Improvement of the layout of the relationship output handler.
+* Add link from the participant count field.
 
 # Version 1.38
 

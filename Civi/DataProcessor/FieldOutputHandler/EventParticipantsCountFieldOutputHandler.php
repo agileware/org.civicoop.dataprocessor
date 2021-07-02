@@ -25,6 +25,11 @@ class EventParticipantsCountFieldOutputHandler extends AbstractSimpleFieldOutput
   protected $role_ids = array();
 
   /**
+   * @var bool
+   */
+  protected $showAsLink = false;
+
+  /**
    * Returns the data type of this field
    *
    * @return String
@@ -49,6 +54,9 @@ class EventParticipantsCountFieldOutputHandler extends AbstractSimpleFieldOutput
     if (isset($configuration['status_ids'])) {
       $this->status_ids = $configuration['status_ids'];
     }
+    if (isset($configuration['show_as_link'])) {
+      $this->showAsLink = $configuration['show_as_link'] ? true : false;
+    }
   }
 
   /**
@@ -61,7 +69,7 @@ class EventParticipantsCountFieldOutputHandler extends AbstractSimpleFieldOutput
    */
   public function formatField($rawRecord, $formattedRecord) {
     $event_id = $rawRecord[$this->inputFieldSpec->alias];
-    $output = new FieldOutput(0);
+    $total = 0;
     if ($event_id) {
       $participantsSql = "
         SELECT count(*) as `total`
@@ -77,9 +85,28 @@ class EventParticipantsCountFieldOutputHandler extends AbstractSimpleFieldOutput
       }
       $dao = \CRM_Core_DAO::executeQuery($participantsSql, $participantsSqlParams);
       if ($dao->fetch()) {
-        $output->rawValue = $dao->total;
-        $output->formattedValue = $dao->total;
+        $total = $dao->total;
       }
+    }
+    if ($this->showAsLink) {
+      $output = new HTMLFieldOutput($total);
+      $urlQueryParams = [
+        'reset' => '1',
+        'force' => '1',
+        'event' => $event_id,
+      ];
+      if (count($this->role_ids) == 1) {
+        $urlQueryParams['role'] = implode(', ', $this->role_ids);
+      } elseif (count($this->role_ids) > 1) {
+        $urlQueryParams['role'] = 'true';
+      }
+      if (count($this->status_ids)) {
+        $urlQueryParams['participant_status_id'] = implode(', ', $this->status_ids);
+      }
+      $url = \CRM_Utils_System::url('civicrm/event/search', $urlQueryParams);
+      $output->setHtmlOutput('<a href="' . $url .'">'.$total.'</a>');
+    } else {
+      $output = new FieldOutput($total);
     }
     return $output;
   }
@@ -121,6 +148,12 @@ class EventParticipantsCountFieldOutputHandler extends AbstractSimpleFieldOutput
       'placeholder' => E::ts('- all statuses -'),
       'multiple' => true,
     ));
+    $form->add('select', 'show_as_link', E::ts('Show link to manage participant'), ['0' => E::ts('No'), '1' => E::ts('Yes')], false, array(
+      'style' => 'min-width:250px',
+      'class' => 'crm-select2 huge',
+      'placeholder' => E::ts('- select -'),
+      'multiple' => false,
+    ));
 
     if (isset($field['configuration'])) {
       $configuration = $field['configuration'];
@@ -130,6 +163,9 @@ class EventParticipantsCountFieldOutputHandler extends AbstractSimpleFieldOutput
       }
       if (isset($configuration['status_ids'])) {
         $defaults['status_ids'] = $configuration['status_ids'];
+      }
+      if (isset($configuration['show_as_link'])) {
+        $defaults['show_as_link'] = $configuration['show_as_link'] ? '1' : '0';
       }
       $form->setDefaults($defaults);
     }
@@ -156,6 +192,7 @@ class EventParticipantsCountFieldOutputHandler extends AbstractSimpleFieldOutput
     $configuration = parent::processConfiguration($submittedValues);
     $configuration['role_ids'] = $submittedValues['role_ids'];
     $configuration['status_ids'] = $submittedValues['status_ids'];
+    $configuration['show_as_link'] = $submittedValues['show_as_link'] ? '1' : '0';
     return $configuration;
   }
 
