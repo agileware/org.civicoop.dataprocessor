@@ -29,6 +29,14 @@
   CRM.$(function($) {
     cj("#{/literal}{$fieldOp}{literal}").change(function() {
       var val = $(this).val();
+      if (val == 'bw' || val == 'nbw') {
+        cj("#{/literal}{$filterMin}_max_cell{literal}").removeClass('hiddenElement');
+        cj("#{/literal}{$filterMin}_cell{literal}").addClass('hiddenElement');
+      } else {
+        cj("#{/literal}{$filterMin}_max_cell{literal}").addClass('hiddenElement');
+        cj("#{/literal}{$filterMin}_cell{literal}").removeClass('hiddenElement');
+      }
+
       if (val == 'current_user' || val == 'null' || val == 'not null') {
         cj("#{/literal}{$filterVal}{literal}").addClass('hiddenElement');
       } else {

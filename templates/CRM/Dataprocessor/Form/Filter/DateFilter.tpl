@@ -26,4 +26,21 @@
     </td>
 </tr>
 
+{literal}
+<script type="text/javascript">
+  CRM.$(function($) {
+    cj("#{/literal}{$fieldOp}{literal}").change(function() {
+      var val = $(this).val();
+      if (val == 'bw' || val == 'nbw') {
+        cj("#{/literal}{$filterMin}_max_cell{literal}").removeClass('hiddenElement');
+        cj("#{/literal}{$filterMin}_cell{literal}").addClass('hiddenElement');
+      } else {
+        cj("#{/literal}{$filterMin}_max_cell{literal}").addClass('hiddenElement');
+        cj("#{/literal}{$filterMin}_cell{literal}").removeClass('hiddenElement');
+      }
+    }).change();
+  });
+</script>
+{/literal}
+
 {/crmScope}

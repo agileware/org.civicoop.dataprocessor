@@ -2,6 +2,7 @@
 
 * Improvement of the layout of the relationship output handler.
 * Add link from the participant count field.
+* Layout of date filter.
 
 # Version 1.38
 
