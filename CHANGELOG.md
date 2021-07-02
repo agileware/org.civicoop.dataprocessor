@@ -1,3 +1,5 @@
+# Version 1.40 (not yet released)
+
 # Version 1.39
 
 * Improvement of the layout of the relationship output handler.
