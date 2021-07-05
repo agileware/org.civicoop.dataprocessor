@@ -221,7 +221,12 @@ class CombinedSqlDataFlow extends SqlDataFlow implements MultipleSourceDataFlows
     foreach($this->sourceDataFlowDescriptions as $sourceDataFlowDescription) {
       if ($sourceDataFlowDescription->getDataFlow() instanceof SqlDataFlow && !$sourceDataFlowDescription->getDataFlow() instanceof SubqueryDataFlow) {
         foreach($sourceDataFlowDescription->getDataFlow()->getWhereClauses() as $clause) {
-          $clauses[] = $clause;
+          if ($clause->isJoinClause() && $includeJoinClause) {
+            $clauses[] = $clause;
+          }
+          if (!$clause->isJoinClause() && $includeNonJoinClause) {
+            $clauses[] = $clause;
+          }
         }
       }
     }

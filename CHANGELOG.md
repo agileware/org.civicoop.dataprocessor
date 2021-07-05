@@ -1,4 +1,6 @@
-# Version 1.40 (not yet released)
+# Version 1.40
+
+* Fixed issue with joins and filters on a data source.
 
 # Version 1.39
 

@@ -474,8 +474,8 @@ class SimpleJoin implements JoinInterface, SqlJoinInterface {
 
     $extraClause  = "";
     $dataFlow = $sourceDataFlowDescription->getDataFlow();
-    if ($dataFlow  instanceof  SqlTableDataFlow) {
-      $whereClauses = $dataFlow->getWhereClauses();
+    if ($dataFlow  instanceof  SqlDataFlow) {
+      $whereClauses = $dataFlow->getWhereClauses(TRUE, FALSE);
       foreach($whereClauses as $whereClause) {
         if ($whereClause->isJoinClause() && $whereClause) {
           $this->filterClauses[] = $whereClause;
