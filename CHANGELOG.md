@@ -1,3 +1,6 @@
+# Version 1.42 (not yet released)
+
+
 # Version 1.41
 
 * Fixed regression bug with joins and filters on a data source.
