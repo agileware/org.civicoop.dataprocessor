@@ -191,6 +191,7 @@ class Factory {
     $this->addOutputHandler('calculations_percentage_change', new Definition('Civi\DataProcessor\FieldOutputHandler\Calculations\PercentageChangeFieldOutputHandler'), E::ts('Calculations (on multiple fields): Percentage Change'));
     $this->addOutputHandler('aggregation_function', new Definition('Civi\DataProcessor\FieldOutputHandler\AggregateFunctionFieldOutputHandler'), E::ts('Aggregation function'));
     $this->addOutputHandler('image', new Definition('Civi\DataProcessor\FieldOutputHandler\ImageFieldOutputHandler'), E::ts('Image'));
+    $this->addOutputHandler('array', new Definition('Civi\DataProcessor\FieldOutputHandler\ArrayFieldOutputHandler'), E::ts('Multivalue Field as Array'));
   }
 
   /**
