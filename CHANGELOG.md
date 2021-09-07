@@ -1,5 +1,6 @@
 # Version 1.42 (not yet released)
 
+* Documented adding dataprocessors to your extension.
 * Ability to return multi-valued field as an array.
 
 # Version 1.41

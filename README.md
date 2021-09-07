@@ -34,7 +34,7 @@ The extension is licensed under [AGPL-3.0](LICENSE.txt).
 * [Available Hooks](docs/hooks.md)
 * [Add your own data source for a CiviCRM Entity](docs/add_your_own_datasource.md)
 * Add your own data source for a CSV File
-* How to store a data processor in code in your extension
+* * [Add your own data source for a CiviCRM Entity](docs/add_your_own_datasource.md)
 * [Data Flow Classes](docs/dev/DataFlowClasses.md) - Overview of all the available data flow classes.
 * [Develop PHPUnit TestCase for the extension](docs/how_to_create_test.md)
 
