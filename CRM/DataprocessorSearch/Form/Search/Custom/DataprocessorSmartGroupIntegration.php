@@ -100,16 +100,14 @@ class CRM_DataprocessorSearch_Form_Search_Custom_DataprocessorSmartGroupIntegrat
    * check whether we are calling saved data processor search and if so
    * redirect it to the right url. As the custom search will fail.
    *
-   * @param $currentUrl
+   * @param int $ssID
+   *   Saved Search ID
    * @throws \CRM_Core_Exception
    */
-  public static function redirectCustomSearchToDataProcessorSearch($currentUrl) {
-    if (stripos($currentUrl, 'civicrm/contact/search/custom')===false || !CRM_Utils_Request::retrieve('ssID', 'Integer')) {
-      return;
-    }
+  public static function redirectCustomSearchToDataProcessorSearch($ssID) {
     // Load saved search to check whether this is a data processor search.
     $savedSearchDao = new CRM_Contact_DAO_SavedSearch();
-    $savedSearchDao->id = CRM_Utils_Request::retrieve('ssID', 'Integer');
+    $savedSearchDao->id = $ssID;
     if (!$savedSearchDao->find(TRUE) || empty($savedSearchDao->form_values)) {
       return;
     }
