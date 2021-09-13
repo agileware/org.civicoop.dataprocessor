@@ -164,7 +164,14 @@ function dataprocessor_civicrm_tabset($tabsetName, &$tabs, $context) {
  */
 function dataprocessor_civicrm_config(&$config) {
   _dataprocessor_civix_civicrm_config($config);
-  CRM_DataprocessorSearch_Form_Search_Custom_DataprocessorSmartGroupIntegration::redirectCustomSearchToDataProcessorSearch(CRM_Utils_System::currentPath());
+
+  $currentUrl = CRM_Utils_System::currentPath();
+  if (stripos($currentUrl, 'civicrm/contact/search/custom') !== FALSE && CRM_Utils_Request::retrieve('ssID', 'Integer')
+    && class_exists('CRM_Contact_Form_Search_Custom_Base')) {
+    // NOTE: Do not load this class unless we're very likely to need it.
+    CRM_DataprocessorSearch_Form_Search_Custom_DataprocessorSmartGroupIntegration::redirectCustomSearchToDataProcessorSearch(
+      CRM_Utils_Request::retrieve('ssID', 'Integer'));
+  }
 }
 
 /**
