@@ -49,3 +49,8 @@ And then press install in the Administer -->  System Settings --> Extensions scr
 To get more information about each fields in DataProcessor. A CiviTutorial has been created, to view tutorial install CiviTutorial Extension.
 
 To Install CiviTutorial in the Administer -->  System Settings --> Extensions screen. (Found in Add New)
+
+## Known Issues
+
+* From civicrm 5.41.0 and up the extension `legacycustomsearches` must be enabled. This is a core supplied extension, so there is no need for download.
+Enable it in the Administer -->  System Settings --> Extensions screen, or use `cv en legacycustomsearches`.

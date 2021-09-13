@@ -1,5 +1,6 @@
 # Version 1.42 (not yet released)
 
+* !101 Fix upgrade crash when upgrading to 5.41.0
 * Documented adding dataprocessors to your extension.
 * Ability to return multi-valued field as an array.
 
