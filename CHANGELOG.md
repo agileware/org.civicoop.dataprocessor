@@ -1,6 +1,6 @@
-# Version 1.42 (not yet released)
+# Version 1.42
 
-* !101 Fix upgrade crash when upgrading to 5.41.0
+* !101 Fix upgrade crash when upgrading to CiviCRM 5.41.0
 * Documented adding dataprocessors to your extension.
 * Ability to return multi-valued field as an array.
 
