@@ -251,7 +251,7 @@ class DateFieldOutputHandler extends AbstractSimpleSortableFieldOutputHandler im
       'datetime' => array(
         'sql' => 'TIMESTAMP',
         'php_date_format' => "Y-m-d H:i:s",
-        'title' => E::ts('Timestamp'),
+        'title' => E::ts('Datetime'),
       ),
     );
   }
