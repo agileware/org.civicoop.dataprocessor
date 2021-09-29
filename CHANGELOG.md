@@ -1,5 +1,7 @@
 # Version 1.43-dev (not yet released)
 
+* DateFieldOutput DateTime Option by !93
+
 # Version 1.42
 
 * !101 Fix upgrade crash when upgrading to CiviCRM 5.41.0
