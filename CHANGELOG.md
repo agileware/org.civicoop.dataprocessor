@@ -1,5 +1,6 @@
 # Version 1.43-dev (not yet released)
 
+* Prevent non-numeric value warning in the TotalFieldOutputHandler.
 * DateFieldOutput DateTime Option by !93
 
 # Version 1.42

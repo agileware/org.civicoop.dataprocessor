@@ -22,7 +22,9 @@ class TotalFieldOutputHandler extends CalculationFieldOutputHandler {
     }
     $value = 0;
     foreach($values as $v) {
-      $value = $value + $v;
+      if (is_numeric($v)) {
+        $value = $value + $v;
+      }
     }
     return $value;
   }
