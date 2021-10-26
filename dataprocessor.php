@@ -37,10 +37,12 @@ function dataprocessor_civicrm_container(ContainerBuilder $container) {
 
   // Add event listeners so we can integrate a data processor search with smart groups.
   // Insert event listener for altering saved search so we can save smart groups.
-  $container->findDefinition('dispatcher')
-    ->addMethodCall('addListener', array('civi.dao.postUpdate', ['CRM_DataprocessorSearch_Form_Search_Custom_DataprocessorSmartGroupIntegration', 'alterSavedSearch']))
-    ->addMethodCall('addListener', array('civi.dao.postInsert', ['CRM_DataprocessorSearch_Form_Search_Custom_DataprocessorSmartGroupIntegration', 'alterSavedSearch']))
-  ;
+  if (class_exists('CRM_Contact_Form_Search_Custom_Base')) {
+    $container->findDefinition('dispatcher')
+      ->addMethodCall('addListener', array('civi.dao.postUpdate', ['CRM_DataprocessorSearch_Form_Search_Custom_DataprocessorSmartGroupIntegration', 'alterSavedSearch']))
+      ->addMethodCall('addListener', array('civi.dao.postInsert', ['CRM_DataprocessorSearch_Form_Search_Custom_DataprocessorSmartGroupIntegration', 'alterSavedSearch']))
+    ;
+  }
 }
 
 /**
