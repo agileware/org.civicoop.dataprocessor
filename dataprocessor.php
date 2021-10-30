@@ -37,6 +37,8 @@ function dataprocessor_civicrm_container(ContainerBuilder $container) {
 
   // Add event listeners so we can integrate a data processor search with smart groups.
   // Insert event listener for altering saved search so we can save smart groups.
+  // class_exist test allows the CiviCRM upgrade to succeed without the legacycustomsearches module enabled
+  // it must however, be enabled afterwards (see README.md)
   if (class_exists('CRM_Contact_Form_Search_Custom_Base')) {
     $container->findDefinition('dispatcher')
       ->addMethodCall('addListener', array('civi.dao.postUpdate', ['CRM_DataprocessorSearch_Form_Search_Custom_DataprocessorSmartGroupIntegration', 'alterSavedSearch']))

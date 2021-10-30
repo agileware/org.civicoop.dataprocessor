@@ -1,5 +1,6 @@
 # Version 1.43-dev (not yet released)
 
+* Enable upgrade to CiviCRM 5.43 and beyond without legacycustomsearches module enabled !94.
 * Prevent non-numeric value warning in the TotalFieldOutputHandler.
 * DateFieldOutput DateTime Option by !93
 
