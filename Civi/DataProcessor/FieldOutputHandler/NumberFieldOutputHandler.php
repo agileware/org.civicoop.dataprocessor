@@ -6,28 +6,15 @@
 
 namespace Civi\DataProcessor\FieldOutputHandler;
 
-use Civi\DataProcessor\Exception\DataSourceNotFoundException;
-use Civi\DataProcessor\Exception\FieldNotFoundException;
-use CRM_Dataprocessor_ExtensionUtil as E;
-use Civi\DataProcessor\Source\SourceInterface;
 use Civi\DataProcessor\DataSpecification\FieldSpecification;
+use CRM_Dataprocessor_ExtensionUtil as E;
 
-class NumberFieldOutputHandler extends AbstractSimpleSortableFieldOutputHandler implements OutputHandlerAggregate {
+class NumberFieldOutputHandler extends AbstractFormattedNumberOutputHandler implements OutputHandlerAggregate {
 
   /**
    * @var bool
    */
   protected $isAggregateField = false;
-
-  protected $number_of_decimals;
-
-  protected $decimal_sep;
-
-  protected $thousand_sep;
-
-  protected $prefix = '';
-
-  protected $suffix = '';
 
   /**
    * Returns the formatted value
@@ -39,18 +26,7 @@ class NumberFieldOutputHandler extends AbstractSimpleSortableFieldOutputHandler 
    */
   public function formatField($rawRecord, $formattedRecord) {
     $value = (float) $rawRecord[$this->inputFieldSpec->alias];
-
-    $formattedValue = $value;
-    if (is_numeric($this->number_of_decimals) && $value !== null) {
-      $formattedValue = number_format((float) $value, $this->number_of_decimals, $this->decimal_sep, $this->thousand_sep);
-    }
-    if ($formattedValue != null) {
-      $formattedValue = $this->prefix . $formattedValue . $this->suffix;
-    }
-
-    $output = new FieldOutput((float) $rawRecord[$this->inputFieldSpec->alias]);
-    $output->formattedValue = $formattedValue;
-    return $output;
+    return $this->formatOutput($value);
   }
 
   /**
@@ -63,7 +39,6 @@ class NumberFieldOutputHandler extends AbstractSimpleSortableFieldOutputHandler 
    */
   public function initialize($alias, $title, $configuration) {
     parent::initialize($alias, $title, $configuration);
-    $this->outputFieldSpec->type = 'String';
     $this->isAggregateField = isset($configuration['is_aggregate']) ? $configuration['is_aggregate'] : false;
 
     if ($this->isAggregateField) {
@@ -71,22 +46,6 @@ class NumberFieldOutputHandler extends AbstractSimpleSortableFieldOutputHandler 
       if ($dataFlow) {
         $dataFlow->addAggregateOutputHandler($this);
       }
-    }
-
-    if (isset($configuration['number_of_decimals'])) {
-      $this->number_of_decimals = $configuration['number_of_decimals'];
-    }
-    if (isset($configuration['decimal_separator'])) {
-      $this->decimal_sep = $configuration['decimal_separator'];
-    }
-    if (isset($configuration['thousand_separator'])) {
-      $this->thousand_sep = $configuration['thousand_separator'];
-    }
-    if (isset($configuration['prefix'])) {
-      $this->prefix = $configuration['prefix'];
-    }
-    if (isset($configuration['suffix'])) {
-      $this->suffix = $configuration['suffix'];
     }
   }
 
@@ -114,7 +73,6 @@ class NumberFieldOutputHandler extends AbstractSimpleSortableFieldOutputHandler 
     }
   }
 
-
   /**
    * When this handler has additional configuration you can add
    * the fields on the form with this function.
@@ -126,34 +84,12 @@ class NumberFieldOutputHandler extends AbstractSimpleSortableFieldOutputHandler 
     parent::buildConfigurationForm($form, $field);
     $form->add('checkbox', 'is_aggregate', E::ts('Aggregate on this field'));
 
-    $form->add('text', 'number_of_decimals', E::ts('Number of decimals'), false);
-    $form->add('text', 'decimal_separator', E::ts('Decimal separator'), false);
-    $form->add('text', 'thousand_separator', E::ts('Thousand separator'), false);
-    $form->add('text', 'prefix', E::ts('Prefix (e.g. &euro;)'), false);
-    $form->add('text', 'suffix', E::ts('Suffix (e.g. $)'), false);
-
     if (isset($field['configuration'])) {
       $configuration = $field['configuration'];
-      $defaults = array();
       if (isset($configuration['is_aggregate'])) {
-        $defaults['is_aggregate'] = $configuration['is_aggregate'];
+        $this->defaults['is_aggregate'] = $configuration['is_aggregate'];
       }
-      if (isset($configuration['number_of_decimals'])) {
-        $defaults['number_of_decimals'] = $configuration['number_of_decimals'];
-      }
-      if (isset($configuration['decimal_separator'])) {
-        $defaults['decimal_separator'] = $configuration['decimal_separator'];
-      }
-      if (isset($configuration['thousand_separator'])) {
-        $defaults['thousand_separator'] = $configuration['thousand_separator'];
-      }
-      if (isset($configuration['prefix'])) {
-        $defaults['prefix'] = $configuration['prefix'];
-      }
-      if (isset($configuration['suffix'])) {
-        $defaults['suffix'] = $configuration['suffix'];
-      }
-      $form->setDefaults($defaults);
+      $form->setDefaults($this->defaults);
     }
   }
 
@@ -177,11 +113,6 @@ class NumberFieldOutputHandler extends AbstractSimpleSortableFieldOutputHandler 
   public function processConfiguration($submittedValues) {
     $configuration = parent::processConfiguration($submittedValues);
     $configuration['is_aggregate'] = isset($submittedValues['is_aggregate']) ? $submittedValues['is_aggregate'] : false;
-    $configuration['number_of_decimals'] = $submittedValues['number_of_decimals'];
-    $configuration['decimal_separator'] = $submittedValues['decimal_separator'];
-    $configuration['thousand_separator'] = $submittedValues['thousand_separator'];
-    $configuration['prefix'] = $submittedValues['prefix'];
-    $configuration['suffix'] = $submittedValues['suffix'];
     return $configuration;
   }
 
@@ -227,6 +158,5 @@ class NumberFieldOutputHandler extends AbstractSimpleSortableFieldOutputHandler 
     }
     return false;
   }
-
 
 }
