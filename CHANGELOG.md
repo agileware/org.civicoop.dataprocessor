@@ -1,4 +1,4 @@
-# Version 1.44-dev (not yet released)
+# Version 1.44
 
 * Introduce AbstractFormattedNumberOutputHandler with !95
 
