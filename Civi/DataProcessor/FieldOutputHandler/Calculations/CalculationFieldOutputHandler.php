@@ -6,12 +6,10 @@
 
 namespace Civi\DataProcessor\FieldOutputHandler\Calculations;
 
-use Civi\DataProcessor\DataSpecification\FieldSpecification;
-use Civi\DataProcessor\FieldOutputHandler\AbstractSimpleSortableFieldOutputHandler;
-use Civi\DataProcessor\FieldOutputHandler\FieldOutput;
+use Civi\DataProcessor\FieldOutputHandler\AbstractFormattedNumberOutputHandler;
 use CRM_Dataprocessor_ExtensionUtil as E;
 
-abstract class CalculationFieldOutputHandler extends AbstractSimpleSortableFieldOutputHandler {
+abstract class CalculationFieldOutputHandler extends AbstractFormattedNumberOutputHandler {
 
   /**
    * @var \Civi\DataProcessor\DataSpecification\FieldSpecification
@@ -23,38 +21,12 @@ abstract class CalculationFieldOutputHandler extends AbstractSimpleSortableField
    */
   protected $inputFieldSpecs = array();
 
-  protected $prefix = '';
-
-  protected $suffix = '';
-
-  protected $number_of_decimals = '';
-
-  protected $decimal_sep = '';
-
-  protected $thousand_sep = '';
-
   /**
    * @param array $rawRecord,
    * @param array $formattedRecord
    * @return int|float
    */
   abstract protected function doCalculation($rawRecord, $formattedRecord);
-
-  /**
-   * @return \Civi\DataProcessor\DataSpecification\FieldSpecification
-   */
-  public function getOutputFieldSpecification() {
-    return $this->outputFieldSpec;
-  }
-
-  /**
-   * Returns the data type of this field
-   *
-   * @return String
-   */
-  protected function getType() {
-    return 'String';
-  }
 
   /**
    * Initialize the processor
@@ -65,6 +37,7 @@ abstract class CalculationFieldOutputHandler extends AbstractSimpleSortableField
    * @param \Civi\DataProcessor\ProcessorType\AbstractProcessorType $processorType
    */
   public function initialize($alias, $title, $configuration) {
+    parent::initialize($alias, $title, $configuration);
     if (isset($configuration['fields']) && !isset($configuration['fields_0'])) {
       $configuration['fields_0'] = $configuration['fields'];
     }
@@ -84,33 +57,6 @@ abstract class CalculationFieldOutputHandler extends AbstractSimpleSortableField
         $this->inputFieldSpecs[$i] = $inputFieldSpec;
       }
     }
-
-    $this->outputFieldSpec = new FieldSpecification($alias, 'String', $title, null, $alias);
-
-    if (isset($configuration['number_of_decimals'])) {
-      $this->number_of_decimals = $configuration['number_of_decimals'];
-    }
-    if (isset($configuration['decimal_separator'])) {
-      $this->decimal_sep = $configuration['decimal_separator'];
-    }
-    if (isset($configuration['thousand_separator'])) {
-      $this->thousand_sep = $configuration['thousand_separator'];
-    }
-    if (isset($configuration['prefix'])) {
-      $this->prefix = $configuration['prefix'];
-    }
-    if (isset($configuration['suffix'])) {
-      $this->suffix = $configuration['suffix'];
-    }
-  }
-
-  /**
-   * Returns true when this handler has additional configuration.
-   *
-   * @return bool
-   */
-  public function hasConfiguration() {
-    return true;
   }
 
   /**
@@ -121,6 +67,7 @@ abstract class CalculationFieldOutputHandler extends AbstractSimpleSortableField
    * @param array $field
    */
   public function buildConfigurationForm(\CRM_Core_Form $form, $field=array()) {
+    parent::buildConfigurationForm($form, $field);
     $fieldSelect = $this->getFieldOptions($field['data_processor_id']);
 
     $fieldSelectConfigurations = $this->getFieldSelectConfigurations();
@@ -136,40 +83,20 @@ abstract class CalculationFieldOutputHandler extends AbstractSimpleSortableField
     }
     $form->assign('fieldSelects', $fieldSelects);
 
-    $form->add('text', 'number_of_decimals', E::ts('Number of decimals'), false);
-    $form->add('text', 'decimal_separator', E::ts('Decimal separator'), false);
-    $form->add('text', 'thousand_separator', E::ts('Thousand separator'), false);
-    $form->add('text', 'prefix', E::ts('Prefix (e.g. &euro;)'), false);
-    $form->add('text', 'suffix', E::ts('Suffix (e.g. $)'), false);
     if (isset($field['configuration'])) {
       $configuration = $field['configuration'];
-      $defaults = array();
 
       if (isset($configuration['fields'])) {
         // Backwards compatibility.
-        $defaults['fields_0'] = $configuration['fields'];
+        $this->defaults['fields_0'] = $configuration['fields'];
       }
       for($i=0; $i<count($fieldSelectConfigurations); $i++) {
         if (isset($configuration['fields_'.$i])) {
-          $defaults['fields_'.$i] = $configuration['fields_'.$i];
+          $this->defaults['fields_'.$i] = $configuration['fields_'.$i];
         }
       }
-      if (isset($configuration['number_of_decimals'])) {
-        $defaults['number_of_decimals'] = $configuration['number_of_decimals'];
-      }
-      if (isset($configuration['decimal_separator'])) {
-        $defaults['decimal_separator'] = $configuration['decimal_separator'];
-      }
-      if (isset($configuration['thousand_separator'])) {
-        $defaults['thousand_separator'] = $configuration['thousand_separator'];
-      }
-      if (isset($configuration['prefix'])) {
-        $defaults['prefix'] = $configuration['prefix'];
-      }
-      if (isset($configuration['suffix'])) {
-        $defaults['suffix'] = $configuration['suffix'];
-      }
-      $form->setDefaults($defaults);
+
+      $form->setDefaults($this->defaults);
     }
   }
 
@@ -197,39 +124,12 @@ abstract class CalculationFieldOutputHandler extends AbstractSimpleSortableField
    * @return array
    */
   public function processConfiguration($submittedValues) {
+    $configuration = parent::processConfiguration($submittedValues);
     $fieldSelectConfigurations = $this->getFieldSelectConfigurations();
     for($i=0; $i<count($fieldSelectConfigurations); $i++) {
       $configuration['fields_'.$i] = $submittedValues['fields_'.$i];
     }
-    $configuration['number_of_decimals'] = $submittedValues['number_of_decimals'];
-    $configuration['decimal_separator'] = $submittedValues['decimal_separator'];
-    $configuration['thousand_separator'] = $submittedValues['thousand_separator'];
-    $configuration['prefix'] = $submittedValues['prefix'];
-    $configuration['suffix'] = $submittedValues['suffix'];
     return $configuration;
-  }
-
-  /**
-   * Returns all possible fields
-   *
-   * @param $data_processor_id
-   *
-   * @return array
-   * @throws \Exception
-   */
-  protected function getFieldOptions($data_processor_id) {
-    $fieldSelect = \CRM_Dataprocessor_Utils_DataSourceFields::getAvailableFieldsInDataSources($data_processor_id, array($this, 'isFieldValid'));
-    return $fieldSelect;
-  }
-
-  /**
-   * Callback function for determining whether this field could be handled by this output handler.
-   *
-   * @param \Civi\DataProcessor\DataSpecification\FieldSpecification $field
-   * @return bool
-   */
-  public function isFieldValid(FieldSpecification $field) {
-    return true;
   }
 
   /**
@@ -242,16 +142,7 @@ abstract class CalculationFieldOutputHandler extends AbstractSimpleSortableField
    */
   public function formatField($rawRecord, $formattedRecord) {
     $value = $this->doCalculation($rawRecord, $formattedRecord);
-    $formattedValue = $value;
-    if (is_numeric($this->number_of_decimals) && $value != null) {
-      $formattedValue = number_format($value, $this->number_of_decimals, $this->decimal_sep, $this->thousand_sep);
-    }
-    if ($formattedValue != null) {
-      $formattedValue = $this->prefix . $formattedValue . $this->suffix;
-    }
-    $output = new FieldOutput($value);
-    $output->formattedValue = $formattedValue;
-    return $output;
+    return $this->formatOutput($value);
   }
 
 }

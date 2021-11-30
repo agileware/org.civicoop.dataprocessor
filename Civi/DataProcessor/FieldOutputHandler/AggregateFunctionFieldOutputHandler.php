@@ -10,26 +10,14 @@ use Civi\DataProcessor\DataSpecification\AggregateFunctionFieldSpecification;
 use Civi\DataProcessor\DataSpecification\FieldSpecification;
 use Civi\DataProcessor\Exception\DataSourceNotFoundException;
 use Civi\DataProcessor\Exception\FieldNotFoundException;
-use Civi\DataProcessor\FieldOutputHandler\FieldOutput;
-use Civi\DataProcessor\FieldOutputHandler\RawFieldOutputHandler;
 use CRM_Dataprocessor_ExtensionUtil as E;
 
-class AggregateFunctionFieldOutputHandler extends AbstractSimpleSortableFieldOutputHandler {
+class AggregateFunctionFieldOutputHandler extends AbstractFormattedNumberOutputHandler {
 
   /**
    * @var \Civi\DataProcessor\DataSpecification\FieldSpecification
    */
   protected $aggregateField;
-
-  protected $prefix = '';
-
-  protected $suffix = '';
-
-  protected $number_of_decimals = '';
-
-  protected $decimal_sep = '';
-
-  protected $thousand_sep = '';
 
   /**
    * @return \Civi\DataProcessor\DataSpecification\FieldSpecification
@@ -57,20 +45,7 @@ class AggregateFunctionFieldOutputHandler extends AbstractSimpleSortableFieldOut
    */
   public function formatField($rawRecord, $formattedRecord) {
     $value = (float) $rawRecord[$this->aggregateField->alias];
-
-    $formattedValue = $value;
-    if (is_numeric($this->number_of_decimals) && $value != null) {
-      $formattedValue = number_format((float) $value, $this->number_of_decimals, $this->decimal_sep, $this->thousand_sep);
-    } elseif ($this->inputFieldSpec->type == 'Money') {
-      $formattedValue = \CRM_Utils_Money::format((float) $value);
-    }
-    if ($formattedValue != null) {
-      $formattedValue = $this->prefix . $formattedValue . $this->suffix;
-    }
-
-    $output = new FieldOutput($rawRecord[$this->aggregateField->alias]);
-    $output->formattedValue = $formattedValue;
-    return $output;
+    return $this->formatOutput($value);
   }
 
   /**
@@ -82,6 +57,8 @@ class AggregateFunctionFieldOutputHandler extends AbstractSimpleSortableFieldOut
    * @param \Civi\DataProcessor\ProcessorType\AbstractProcessorType $processorType
    */
   public function initialize($alias, $title, $configuration) {
+    parent::initialize($alias, $title, $configuration);
+
     $this->dataSource = $this->dataProcessor->getDataSourceByName($configuration['datasource']);
     if (!$this->dataSource) {
       throw new DataSourceNotFoundException(E::ts("Field %1 requires data source '%2' which could not be found. Did you rename or delete the data source?", array(1=>$alias, 2=>$configuration['datasource'])));
@@ -107,23 +84,7 @@ class AggregateFunctionFieldOutputHandler extends AbstractSimpleSortableFieldOut
     $this->outputFieldSpec = clone $this->inputFieldSpec;
     $this->outputFieldSpec->alias = $alias;
     $this->outputFieldSpec->title = $title;
-    $this->outputFieldSpec->type = 'String';
-
-    if (isset($configuration['number_of_decimals'])) {
-      $this->number_of_decimals = $configuration['number_of_decimals'];
-    }
-    if (isset($configuration['decimal_separator'])) {
-      $this->decimal_sep = $configuration['decimal_separator'];
-    }
-    if (isset($configuration['thousand_separator'])) {
-      $this->thousand_sep = $configuration['thousand_separator'];
-    }
-    if (isset($configuration['prefix'])) {
-      $this->prefix = $configuration['prefix'];
-    }
-    if (isset($configuration['suffix'])) {
-      $this->suffix = $configuration['suffix'];
-    }
+    $this->outputFieldSpec->type = 'Float';
   }
 
   /**
@@ -134,6 +95,8 @@ class AggregateFunctionFieldOutputHandler extends AbstractSimpleSortableFieldOut
    * @param array $field
    */
   public function buildConfigurationForm(\CRM_Core_Form $form, $field=array()) {
+    parent::buildConfigurationForm($form, $field);
+
     $fieldSelect = $this->getFieldOptions($field['data_processor_id']);
 
     $form->add('select', 'field', E::ts('Field'), $fieldSelect, true, array(
@@ -147,37 +110,15 @@ class AggregateFunctionFieldOutputHandler extends AbstractSimpleSortableFieldOut
       'placeholder' => E::ts('- select -'),
     ));
 
-    $form->add('text', 'number_of_decimals', E::ts('Number of decimals'), false);
-    $form->add('text', 'decimal_separator', E::ts('Decimal separator'), false);
-    $form->add('text', 'thousand_separator', E::ts('Thousand separator'), false);
-    $form->add('text', 'prefix', E::ts('Prefix (e.g. &euro;)'), false);
-    $form->add('text', 'suffix', E::ts('Suffix (e.g. $)'), false);
-
     if (isset($field['configuration'])) {
       $configuration = $field['configuration'];
-      $defaults = array();
       if (isset($configuration['field']) && isset($configuration['datasource'])) {
-        $defaults['field'] = \CRM_Dataprocessor_Utils_DataSourceFields::getSelectedFieldValue($field['data_processor_id'], $configuration['datasource'], $configuration['field']);
+        $this->defaults['field'] = \CRM_Dataprocessor_Utils_DataSourceFields::getSelectedFieldValue($field['data_processor_id'], $configuration['datasource'], $configuration['field']);
       }
       if (isset($configuration['function'])) {
-        $defaults['function'] = $configuration['function'];
+        $this->defaults['function'] = $configuration['function'];
       }
-      if (isset($configuration['number_of_decimals'])) {
-        $defaults['number_of_decimals'] = $configuration['number_of_decimals'];
-      }
-      if (isset($configuration['decimal_separator'])) {
-        $defaults['decimal_separator'] = $configuration['decimal_separator'];
-      }
-      if (isset($configuration['thousand_separator'])) {
-        $defaults['thousand_separator'] = $configuration['thousand_separator'];
-      }
-      if (isset($configuration['prefix'])) {
-        $defaults['prefix'] = $configuration['prefix'];
-      }
-      if (isset($configuration['suffix'])) {
-        $defaults['suffix'] = $configuration['suffix'];
-      }
-      $form->setDefaults($defaults);
+      $form->setDefaults($this->defaults);
     }
   }
 
@@ -191,7 +132,6 @@ class AggregateFunctionFieldOutputHandler extends AbstractSimpleSortableFieldOut
     return "CRM/Dataprocessor/Form/Field/Configuration/AggregateFunctionFieldOutputHandler.tpl";
   }
 
-
   /**
    * Process the submitted values and create a configuration array
    *
@@ -199,15 +139,11 @@ class AggregateFunctionFieldOutputHandler extends AbstractSimpleSortableFieldOut
    * @return array
    */
   public function processConfiguration($submittedValues) {
+    $configuration = parent::processConfiguration($submittedValues);
     list($datasource, $field) = explode('::', $submittedValues['field'], 2);
     $configuration['field'] = $field;
     $configuration['datasource'] = $datasource;
     $configuration['function'] = $submittedValues['function'];
-    $configuration['number_of_decimals'] = $submittedValues['number_of_decimals'];
-    $configuration['decimal_separator'] = $submittedValues['decimal_separator'];
-    $configuration['thousand_separator'] = $submittedValues['thousand_separator'];
-    $configuration['prefix'] = $submittedValues['prefix'];
-    $configuration['suffix'] = $submittedValues['suffix'];
     return $configuration;
   }
 
