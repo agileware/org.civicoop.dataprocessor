@@ -35,22 +35,7 @@ class AbstractFormattedNumberOutputHandler extends AbstractSimpleSortableFieldOu
   public function initialize($alias, $title, $configuration) {
     parent::initialize($alias, $title, $configuration);
     $this->outputFieldSpec = new FieldSpecification($alias, 'Float', $title, null, $alias);
-
-    if (isset($configuration['number_of_decimals'])) {
-      $this->number_of_decimals = $configuration['number_of_decimals'];
-    }
-    if (isset($configuration['decimal_separator'])) {
-      $this->decimal_sep = $configuration['decimal_separator'];
-    }
-    if (isset($configuration['thousand_separator'])) {
-      $this->thousand_sep = $configuration['thousand_separator'];
-    }
-    if (isset($configuration['prefix'])) {
-      $this->prefix = $configuration['prefix'];
-    }
-    if (isset($configuration['suffix'])) {
-      $this->suffix = $configuration['suffix'];
-    }
+    $this->initializeConfiguration($configuration);
   }
 
 
@@ -63,32 +48,7 @@ class AbstractFormattedNumberOutputHandler extends AbstractSimpleSortableFieldOu
    */
   public function buildConfigurationForm(\CRM_Core_Form $form, $field=array()) {
     parent::buildConfigurationForm($form, $field);
-
-    $form->add('text', 'number_of_decimals', E::ts('Number of decimals'), false);
-    $form->add('text', 'decimal_separator', E::ts('Decimal separator'), false);
-    $form->add('text', 'thousand_separator', E::ts('Thousand separator'), false);
-    $form->add('text', 'prefix', E::ts('Prefix (e.g. $)'), false);
-    $form->add('text', 'suffix', E::ts('Suffix (e.g. &euro;)'), false);
-
-    if (isset($field['configuration'])) {
-      $configuration = $field['configuration'];
-      $this->defaults = array();
-      if (isset($configuration['number_of_decimals'])) {
-        $this->defaults['number_of_decimals'] = $configuration['number_of_decimals'];
-      }
-      if (isset($configuration['decimal_separator'])) {
-        $this->defaults['decimal_separator'] = $configuration['decimal_separator'];
-      }
-      if (isset($configuration['thousand_separator'])) {
-        $this->defaults['thousand_separator'] = $configuration['thousand_separator'];
-      }
-      if (isset($configuration['prefix'])) {
-        $this->defaults['prefix'] = $configuration['prefix'];
-      }
-      if (isset($configuration['suffix'])) {
-        $this->defaults['suffix'] = $configuration['suffix'];
-      }
-    }
+    $this->buildFormattedNumberConfigurationForm($form, $field);
   }
 
   /**
@@ -123,6 +83,64 @@ class AbstractFormattedNumberOutputHandler extends AbstractSimpleSortableFieldOu
       $output->formattedValue = $formattedValue;
     }
     return $output;
+  }
+
+  /**
+   * @param array $configuration
+   *
+   * @return void
+   */
+  protected function initializeConfiguration($configuration) {
+    if (isset($configuration['number_of_decimals'])) {
+      $this->number_of_decimals = $configuration['number_of_decimals'];
+    }
+    if (isset($configuration['decimal_separator'])) {
+      $this->decimal_sep = $configuration['decimal_separator'];
+    }
+    if (isset($configuration['thousand_separator'])) {
+      $this->thousand_sep = $configuration['thousand_separator'];
+    }
+    if (isset($configuration['prefix'])) {
+      $this->prefix = $configuration['prefix'];
+    }
+    if (isset($configuration['suffix'])) {
+      $this->suffix = $configuration['suffix'];
+    }
+  }
+
+  /**
+   * @param \CRM_Core_Form $form
+   * @param array $field
+   *
+   * @return void
+   * @throws \CRM_Core_Exception
+   */
+  protected function buildFormattedNumberConfigurationForm(\CRM_Core_Form $form, $field) {
+    $form->add('text', 'number_of_decimals', E::ts('Number of decimals'), FALSE);
+    $form->add('text', 'decimal_separator', E::ts('Decimal separator'), FALSE);
+    $form->add('text', 'thousand_separator', E::ts('Thousand separator'), FALSE);
+    $form->add('text', 'prefix', E::ts('Prefix (e.g. $)'), FALSE);
+    $form->add('text', 'suffix', E::ts('Suffix (e.g. &euro;)'), FALSE);
+
+    if (isset($field['configuration'])) {
+      $configuration = $field['configuration'];
+      $this->defaults = [];
+      if (isset($configuration['number_of_decimals'])) {
+        $this->defaults['number_of_decimals'] = $configuration['number_of_decimals'];
+      }
+      if (isset($configuration['decimal_separator'])) {
+        $this->defaults['decimal_separator'] = $configuration['decimal_separator'];
+      }
+      if (isset($configuration['thousand_separator'])) {
+        $this->defaults['thousand_separator'] = $configuration['thousand_separator'];
+      }
+      if (isset($configuration['prefix'])) {
+        $this->defaults['prefix'] = $configuration['prefix'];
+      }
+      if (isset($configuration['suffix'])) {
+        $this->defaults['suffix'] = $configuration['suffix'];
+      }
+    }
   }
 
 }

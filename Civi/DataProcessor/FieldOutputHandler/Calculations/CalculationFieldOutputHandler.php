@@ -6,6 +6,7 @@
 
 namespace Civi\DataProcessor\FieldOutputHandler\Calculations;
 
+use Civi\DataProcessor\DataSpecification\FieldSpecification;
 use Civi\DataProcessor\FieldOutputHandler\AbstractFormattedNumberOutputHandler;
 use CRM_Dataprocessor_ExtensionUtil as E;
 
@@ -37,7 +38,7 @@ abstract class CalculationFieldOutputHandler extends AbstractFormattedNumberOutp
    * @param \Civi\DataProcessor\ProcessorType\AbstractProcessorType $processorType
    */
   public function initialize($alias, $title, $configuration) {
-    parent::initialize($alias, $title, $configuration);
+    parent::initializeConfiguration($configuration);
     if (isset($configuration['fields']) && !isset($configuration['fields_0'])) {
       $configuration['fields_0'] = $configuration['fields'];
     }
@@ -46,17 +47,18 @@ abstract class CalculationFieldOutputHandler extends AbstractFormattedNumberOutp
       if (is_array($configuration['fields_'.$i])) {
         $j = 0;
         foreach($configuration['fields_'.$i] as $fieldAndDataSource) {
-          list($datasourceName, $field) = explode('::', $fieldAndDataSource, 2);
-          list($dataSource, $inputFieldSpec) = $this->initializeField($field, $datasourceName, $alias.'_'.$i.'_'.$j);
+          [$datasourceName, $field] = explode('::', $fieldAndDataSource, 2);
+          [$dataSource, $inputFieldSpec] = $this->initializeField($field, $datasourceName, $alias.'_'.$i.'_'.$j);
           $this->inputFieldSpecs[$i][] = $inputFieldSpec;
           $j++;
         }
       } else {
-        list($datasourceName, $field) = explode('::', $configuration['fields_' . $i], 2);
-        list($dataSource, $inputFieldSpec) = $this->initializeField($field, $datasourceName, $alias.'_'.$i);
+        [$datasourceName, $field] = explode('::', $configuration['fields_' . $i], 2);
+        [$dataSource, $inputFieldSpec] = $this->initializeField($field, $datasourceName, $alias.'_'.$i);
         $this->inputFieldSpecs[$i] = $inputFieldSpec;
       }
     }
+    $this->outputFieldSpec = new FieldSpecification($alias, 'String', $title, null, $alias);
   }
 
   /**
@@ -67,7 +69,7 @@ abstract class CalculationFieldOutputHandler extends AbstractFormattedNumberOutp
    * @param array $field
    */
   public function buildConfigurationForm(\CRM_Core_Form $form, $field=array()) {
-    parent::buildConfigurationForm($form, $field);
+    parent::buildFormattedNumberConfigurationForm($form, $field);
     $fieldSelect = $this->getFieldOptions($field['data_processor_id']);
 
     $fieldSelectConfigurations = $this->getFieldSelectConfigurations();
