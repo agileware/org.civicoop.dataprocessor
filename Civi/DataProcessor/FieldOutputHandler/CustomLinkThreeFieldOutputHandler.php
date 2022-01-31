@@ -10,7 +10,7 @@ use CRM_Dataprocessor_ExtensionUtil as E;
 use Civi\DataProcessor\Source\SourceInterface;
 use Civi\DataProcessor\DataSpecification\FieldSpecification;
 
-class CustomLinkTwoFieldOutputHandler extends AbstractFieldOutputHandler {
+class CustomLinkThreeFieldOutputHandler extends AbstractFieldOutputHandler {
 
   /**
    * @var \Civi\DataProcessor\Source\SourceInterface
@@ -27,12 +27,14 @@ class CustomLinkTwoFieldOutputHandler extends AbstractFieldOutputHandler {
    */
   protected $linkFieldOne;
   protected $linkFieldTwo;
+  protected $linkFieldThree;
 
   /**
    * @var SourceInterface
    */
   protected $linkFieldOneSource;
   protected $linkFieldTwoSource;
+  protected $linkFieldThreeSource;
 
   protected $linkTemplate;
 
@@ -70,6 +72,7 @@ class CustomLinkTwoFieldOutputHandler extends AbstractFieldOutputHandler {
   public function initialize($alias, $title, $configuration) {
     list($this->linkFieldOneSource, $this->linkFieldOne) = $this->initializeField($configuration['link_field_1'], $configuration['link_field_datasource_1'], $alias.'_link_field_1');
     list($this->linkFieldTwoSource, $this->linkFieldTwo) = $this->initializeField($configuration['link_field_2'], $configuration['link_field_datasource_2'], $alias.'_link_field_2');
+    list($this->linkFieldThreeSource, $this->linkFieldThree) = $this->initializeField($configuration['link_field_3'], $configuration['link_field_datasource_3'], $alias.'_link_field_3');
     if (isset($configuration['link_template'])) {
       $this->linkTemplate = $configuration['link_template'];
     }
@@ -90,14 +93,17 @@ class CustomLinkTwoFieldOutputHandler extends AbstractFieldOutputHandler {
   public function formatField($rawRecord, $formattedRecord) {
     $linkFieldOne = $rawRecord[$this->linkFieldOne->alias];
     $linkFieldTwo = $rawRecord[$this->linkFieldTwo->alias];
+    $linkFieldThree = $rawRecord[$this->linkFieldThree->alias];
 
     $url = $this->linkTemplate;
     $url = str_replace('%1',$linkFieldOne,$url);
     $url = str_replace('%2',$linkFieldTwo,$url);
+    $url = str_replace('%3',$linkFieldThree,$url);
 
     $label = $this->linkText;
     $label = str_replace('%1',$linkFieldOne,$label);
     $label = str_replace('%2',$linkFieldTwo,$label);
+    $label = str_replace('%3',$linkFieldThree,$label);
     $link = '<a href="'.$url.'" target=\"_blank\">'.$label.'</a>';
 
     $formattedValue = new HTMLFieldOutput($link);
@@ -134,6 +140,11 @@ class CustomLinkTwoFieldOutputHandler extends AbstractFieldOutputHandler {
       'class' => 'crm-select2 huge data-processor-field-for-name',
       'placeholder' => E::ts('- select -'),
     ));
+    $form->add('select', 'link_field_3', E::ts('Field 3 to link to'), $fieldSelect, true, array(
+      'style' => 'min-width:250px',
+      'class' => 'crm-select2 huge data-processor-field-for-name',
+      'placeholder' => E::ts('- select -'),
+    ));
     $form->add('text', 'link_template', E::ts('Link Template'), array(
       'style' => 'min-width:250px',
       'class' => 'crm-select2 huge',
@@ -150,6 +161,9 @@ class CustomLinkTwoFieldOutputHandler extends AbstractFieldOutputHandler {
       }
       if (isset($configuration['link_field_2']) && isset($configuration['link_field_datasource_2'])) {
         $defaults['link_field_2'] = \CRM_Dataprocessor_Utils_DataSourceFields::getSelectedFieldValue($field['data_processor_id'], $configuration['link_field_datasource_2'], $configuration['link_field_2']);
+      }
+      if (isset($configuration['link_field_3']) && isset($configuration['link_field_datasource_3'])) {
+        $defaults['link_field_3'] = \CRM_Dataprocessor_Utils_DataSourceFields::getSelectedFieldValue($field['data_processor_id'], $configuration['link_field_datasource_3'], $configuration['link_field_3']);
       }
       if (isset($configuration['link_template'])) {
         $defaults['link_template'] = $configuration['link_template'] ;
@@ -168,7 +182,7 @@ class CustomLinkTwoFieldOutputHandler extends AbstractFieldOutputHandler {
    * @return false|string
    */
   public function getConfigurationTemplateFileName() {
-    return "CRM/Dataprocessor/Form/Field/Configuration/CustomLinkTwoFieldOutputHandler.tpl";
+    return "CRM/Dataprocessor/Form/Field/Configuration/CustomLinkThreeFieldOutputHandler.tpl";
   }
 
 
@@ -181,10 +195,13 @@ class CustomLinkTwoFieldOutputHandler extends AbstractFieldOutputHandler {
   public function processConfiguration($submittedValues) {
     list($ds1, $lf1) = explode('::', $submittedValues['link_field_1'], 2);
     list($ds2, $lf2) = explode('::', $submittedValues['link_field_2'], 2);
+    list($ds3, $lf3) = explode('::', $submittedValues['link_field_3'], 2);
     $configuration['link_field_1'] = $lf1;
     $configuration['link_field_2'] = $lf2;
+    $configuration['link_field_3'] = $lf3;
     $configuration['link_field_datasource_1'] = $ds1;
     $configuration['link_field_datasource_2'] = $ds2;
+    $configuration['link_field_datasource_3'] = $ds3;
     $configuration['link_template'] =$submittedValues['link_template'];
     $configuration['link_text'] =$submittedValues['link_text'];
     return $configuration;
