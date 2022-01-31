@@ -1,5 +1,7 @@
 # Version 1.46-dev
 
+* Added Field Outputhandler for Custom Link with three fields by !74
+
 # Version 1.45
 
 * Fixed error with Aggregated Fields (#105)
