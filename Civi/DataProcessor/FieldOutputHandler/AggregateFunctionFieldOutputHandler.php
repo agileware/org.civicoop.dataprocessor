@@ -57,7 +57,7 @@ class AggregateFunctionFieldOutputHandler extends AbstractFormattedNumberOutputH
    * @param \Civi\DataProcessor\ProcessorType\AbstractProcessorType $processorType
    */
   public function initialize($alias, $title, $configuration) {
-    parent::initialize($alias, $title, $configuration);
+    parent::initializeConfiguration($configuration);
 
     $this->dataSource = $this->dataProcessor->getDataSourceByName($configuration['datasource']);
     if (!$this->dataSource) {
