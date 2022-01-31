@@ -1,4 +1,4 @@
-# Version 1.45-dev
+# Version 1.45
 
 * Fixed error with Aggregated Fields (#105)
 * Fixed error with CalculationFields
