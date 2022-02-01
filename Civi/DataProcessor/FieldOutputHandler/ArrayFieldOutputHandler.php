@@ -73,7 +73,7 @@ class ArrayFieldOutputHandler extends AbstractSimpleFieldOutputHandler {
       $formattedValue = explode(\CRM_Core_DAO::VALUE_SEPARATOR, substr($formattedValue, 1, -1));
     }
     // Convert to option labels if applicable.
-    if ($this->label_as_value) {
+    if ($this->label_as_value && $formattedValue) {
       $options = $this->inputFieldSpec->getOptions();
       foreach ($formattedValue as $k => $v) {
         if (isset($options[$v])) {
