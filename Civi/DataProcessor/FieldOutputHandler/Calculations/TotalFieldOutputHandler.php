@@ -35,7 +35,7 @@ class TotalFieldOutputHandler extends CalculationFieldOutputHandler {
   public function getSortableInputFieldSpec() {
     $fieldSpec = new FieldSpecification($this->getOutputFieldSpecification()
       ->getName(),
-      'String',
+      'Float',
       $this->getOutputFieldSpecification()->title
     );
     $terms = [];

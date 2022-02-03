@@ -1,5 +1,6 @@
 # Version 1.46-dev
 
+* The TotalFieldOutputHandler now sorts numeric instead of alphabetic (so first 9 and then 10)
 * Added Field Outputhandler for Custom Link with three fields by !74
 * Don't emit a PHP warning on a null string with 'use label as value' by !99
 
