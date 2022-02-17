@@ -1,4 +1,4 @@
-# Version 1.46-dev
+# Version 1.46
 
 * The TotalFieldOutputHandler now sorts numeric instead of alphabetic (so first 9 and then 10)
 * Added Field Outputhandler for Custom Link with three fields by !74
