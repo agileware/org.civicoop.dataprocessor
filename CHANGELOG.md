@@ -3,6 +3,7 @@
 * The TotalFieldOutputHandler now sorts numeric instead of alphabetic (so first 9 and then 10)
 * Added Field Outputhandler for Custom Link with three fields by !74
 * Don't emit a PHP warning on a null string with 'use label as value' by !99
+* Fix CiviCRM Case, adding Case as source, the default values cause an Error, see #102
 
 # Version 1.45
 
