@@ -179,7 +179,7 @@ class CaseSource extends AbstractCivicrmEntitySource {
           $name = str_replace('case_contact_', '', $spec->name);
           $this->caseContactDataFlow->addWhereClause(new SimpleWhereClause($this->caseContactDataFlow->getTableAlias(), $name, $op, $values, $spec->type, FALSE));
         } else {
-          $this->caseDataFlow->addWhereClause(new SimpleWhereClause($this->caseDataFlow->getTableAlias(), $spec->name, $op, $values, $spec->type, TRUE));
+          $this->caseDataFlow->addWhereClause(new SimpleWhereClause($this->caseDataFlow->getTableAlias(), $spec->name, $op, $values, $spec->type, FALSE));
         }
         $this->addFilterToAggregationDataFlow($spec, $op, $values);
       }
