@@ -171,7 +171,7 @@ class CaseSource extends AbstractCivicrmEntitySource {
         $customGroupDataFlow = $this->ensureCustomGroup($spec->customGroupTableName, $spec->customGroupName);
         $customGroupTableAlias = $customGroupDataFlow->getTableAlias();
         $customGroupDataFlow->addWhereClause(
-          new SimpleWhereClause($customGroupTableAlias, $spec->customFieldColumnName, $op, $values, $spec->type, TRUE)
+          new SimpleWhereClause($customGroupTableAlias, $spec->customFieldColumnName, $op, $values, $spec->type, FALSE)
         );
       } else {
         $this->ensureEntity();
