@@ -165,7 +165,7 @@ class ContributionSource extends AbstractCivicrmEntitySource {
           $name = str_replace('contribution_soft_', '', $spec->name);
           $this->contributionSoftDataFlow->addWhereClause(new SimpleWhereClause($this->contributionSoftDataFlow->getTableAlias(), $name, $op, $values, $spec->type, FALSE));
         } else {
-          $this->contributionDataFlow->addWhereClause(new SimpleWhereClause($this->contributionDataFlow->getTableAlias(), $spec->name, $op, $values, $spec->type, TRUE));
+          $this->contributionDataFlow->addWhereClause(new SimpleWhereClause($this->contributionDataFlow->getTableAlias(), $spec->name, $op, $values, $spec->type, FALSE));
         }
         $this->addFilterToAggregationDataFlow($spec, $op, $values);
       }
