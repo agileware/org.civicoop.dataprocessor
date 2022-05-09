@@ -173,6 +173,7 @@ class Factory {
     $this->addOutputHandler('custom_link', new Definition('Civi\DataProcessor\FieldOutputHandler\CustomLinkFieldOutputHandler'), E::ts('Custom Link'));
     $this->addOutputHandler('custom_link_2', new Definition('Civi\DataProcessor\FieldOutputHandler\CustomLinkTwoFieldOutputHandler'), E::ts('Custom Link (using 2 fields)'));
     $this->addOutputHandler('custom_link_3', new Definition('Civi\DataProcessor\FieldOutputHandler\CustomLinkThreeFieldOutputHandler'), E::ts('Custom Link (using 3 fields)'));
+    $this->addOutputHandler('text_from_fields', new Definition('Civi\DataProcessor\FieldOutputHandler\TextFromFieldsOutputHandler'), E::ts('Text from template using up to 9 fields'));
     $this->addOutputHandler('contact_checksum', new Definition('Civi\DataProcessor\FieldOutputHandler\ContactChecksumFieldOutputHandler'), E::ts('Contact Checksum'));
     $this->addOutputHandler('edit_activity_link', new Definition('Civi\DataProcessor\FieldOutputHandler\EditActivityLinkFieldOutputHandler'), E::ts('Link to edit an activity'));
     $this->addOutputHandler('is_active', new Definition('Civi\DataProcessor\FieldOutputHandler\IsActiveFieldOutputHandler'), E::ts('Is Active (based on dates)'));
