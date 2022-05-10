@@ -1,5 +1,6 @@
 # Version 1.47-dev
 
+* Added Field Output Handler for Text from Template. 
 
 
 # Version 1.46
