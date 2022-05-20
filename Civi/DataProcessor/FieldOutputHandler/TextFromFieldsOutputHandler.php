@@ -189,7 +189,6 @@ class TextFromFieldsOutputHandler extends AbstractFieldOutputHandler {
         $lf = [];
         for ($i = 1; $i <= $this->nDataFields; ++$i) {
             if ($submittedValues["data_field_$i"]) {
-                \Civi::log()->debug("submitted $i: " . $submittedValues["data_field_$i"]);
                 list($ds[$i], $lf[$i]) = explode('::', $submittedValues["data_field_$i"], 2);
                 $configuration["data_field_datasource_$i"] = $ds[$i];
                 $configuration["data_field_$i"] = $lf[$i];
