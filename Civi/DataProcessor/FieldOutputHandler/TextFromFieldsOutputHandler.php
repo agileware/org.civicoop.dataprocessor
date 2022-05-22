@@ -121,13 +121,14 @@ class TextFromFieldsOutputHandler extends AbstractFieldOutputHandler {
         $data_found = false;
         $mandatory_data_missing = false;
         $text = preg_replace_callback(
-            '/%([!]?)([1-9][0-9]*)/',
+            '/%(?:(([!]?)([1-9][0-9]*))|({([!]?)([1-9][0-9]*)}))/',
             function($matches) use ($values, &$data_found, &$mandatory_data_missing) {
-                $n = $matches[2] - 0;
-                $value = array_key_exists($n, $values) ? $values[$n] : '';
+                $exclamation = $matches[1] ? $matches[2] : $matches[5];
+                $name = $matches[1] ? $matches[3] : $matches[6];
+                $value = array_key_exists($name, $values) ? $values[$name] : '';
                 if (strlen($value)) {
                     $data_found = true;
-                } else if (strlen($matches[1])) {
+                } else if (strlen($exclamation)) {
                     $mandatory_data_missing = true;
                 }
                 return $value;

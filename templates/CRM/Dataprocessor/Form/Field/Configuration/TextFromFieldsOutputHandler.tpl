@@ -28,7 +28,7 @@
         <div class="content">{$form.data_field_9.html}</div>
         <div class="clear"></div>
     </div>
-    <p class="help">{ts}Use %1, %2 … %9 as placeholders in the text template, they will be replaced by the value of the corresponding data field. Add an exclamation mark to the placeholders (%!1 etc.) to make the corresponding data field mandatory: If all data fields used in the template are empty or if one mandatory data field is empty, the whole result will be empty.{/ts}</p>
+    <p class="help">{ts}Use %1, %2 … %9 as placeholders in the text template, they will be replaced by the value of the corresponding data field. Add an exclamation mark to the placeholders (%!1 etc.) to make the corresponding data field mandatory: If all data fields used in the template are empty or if one mandatory data field is empty, the whole result will be empty. You can use braces for clarity: %&#x7B;1&#x7D; or %&#x7B;!1&#x7D;.{/ts}</p>
     <div class="crm-section">
         <div class="label">{$form.text_template.label}</div>
         <div class="content">{$form.text_template.html}</div>
