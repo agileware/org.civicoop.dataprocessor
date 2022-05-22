@@ -36,6 +36,8 @@ class TextFromFieldsOutputHandler extends AbstractFieldOutputHandler {
 
     protected $textTemplate;
 
+    protected $fallbackTemplate;
+
     protected $linkText;
 
     /**
@@ -82,6 +84,9 @@ class TextFromFieldsOutputHandler extends AbstractFieldOutputHandler {
         if (isset($configuration['text_template'])) {
             $this->textTemplate = $configuration['text_template'];
         }
+        if (isset($configuration['text_template'])) {
+            $this->fallbackTemplate = $configuration['fallback_template'];
+        }
         $this->outputFieldSpecification = new FieldSpecification($this->dataFields[1]->name, 'String', $title, null, $alias);
     }
 
@@ -96,33 +101,45 @@ class TextFromFieldsOutputHandler extends AbstractFieldOutputHandler {
     public function formatField($rawRecord, $formattedRecord) {
         $dataFields = [];
         for ($i = 1; $i <= $this->nDataFields; ++$i) {
-            $dataFields[$i] = $rawRecord[$this->dataFields[$i]->alias];
+            if (array_key_exists($i, $this->dataFields)) {
+                $dataFields[$i] = $rawRecord[$this->dataFields[$i]->alias];
+            }
         }
 
-        $data_found = false;
-        $mandatory_data_missing = false;
-        $text = preg_replace_callback(
-            '/%([!]?)([1-9][0-9]*)/',
-            function($matches) use ($dataFields, &$data_found, &$mandatory_data_missing) {
-                $n = $matches[2] - 0;
-                $dataField = $n <= $this->nDataFields ? $dataFields[$n] : '';
-                if (strlen($dataField)) {
-                    $data_found = true;
-                } else if (strlen($matches[1])) {
-                    $mandatory_data_missing = true;
-                }
-                return $dataField;
-            },
-            $this->textTemplate
-        );
-        if ($mandatory_data_missing || !$data_found) {
-            $text = '';
+        $text = $this->substitute($this->textTemplate, $dataFields);
+        if (!strlen($text) && strlen($this->fallbackTemplate)) {
+            $text = $this->substitute($this->fallbackTemplate, $dataFields);
         }
 
         $formattedValue = new HTMLFieldOutput($text);
         $formattedValue->setHtmlOutput($text);
         return $formattedValue;
     }
+
+    private function substitute($template, $values)
+    {
+        $data_found = false;
+        $mandatory_data_missing = false;
+        $text = preg_replace_callback(
+            '/%([!]?)([1-9][0-9]*)/',
+            function($matches) use ($values, &$data_found, &$mandatory_data_missing) {
+                $n = $matches[2] - 0;
+                $value = array_key_exists($n, $values) ? $values[$n] : '';
+                if (strlen($value)) {
+                    $data_found = true;
+                } else if (strlen($matches[1])) {
+                    $mandatory_data_missing = true;
+                }
+                return $value;
+            },
+            $template
+        );
+        if ($mandatory_data_missing || !$data_found) {
+            $text = '';
+        }
+        return $text;
+    }
+
 
     /**
      * Returns true when this handler has additional configuration.
@@ -153,6 +170,10 @@ class TextFromFieldsOutputHandler extends AbstractFieldOutputHandler {
             'style' => 'min-width: 250px',
             'class' => 'crm-select2 huge12',
         ), true);
+        $form->add('textarea', 'fallback_template', E::ts('Fallback Template'), array(
+            'style' => 'min-width: 250px',
+            'class' => 'crm-select2 huge12',
+        ), false);
         if (isset($field['configuration'])) {
             $configuration = $field['configuration'];
             $defaults = array();
@@ -163,6 +184,9 @@ class TextFromFieldsOutputHandler extends AbstractFieldOutputHandler {
             }
             if (isset($configuration['text_template'])) {
                 $defaults['text_template'] = $configuration['text_template'] ;
+            }
+            if (isset($configuration['fallback_template'])) {
+                $defaults['fallback_template'] = $configuration['fallback_template'] ;
             }
             $form->setDefaults($defaults);
         }
@@ -195,6 +219,7 @@ class TextFromFieldsOutputHandler extends AbstractFieldOutputHandler {
             }
         }
         $configuration['text_template'] = $submittedValues['text_template'];
+        $configuration['fallback_template'] = $submittedValues['fallback_template'];
         return $configuration;
     }
 
