@@ -1,5 +1,7 @@
 # Version 1.48-dev
 
+* Fixed export from Smart Groups, by manage groups --> contacts --> export CSV
+
 # Version 1.47
 
 * Added Field Output Handler for Text from Template. 
