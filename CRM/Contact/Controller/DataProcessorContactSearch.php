@@ -88,4 +88,37 @@ class CRM_Contact_Controller_DataProcessorContactSearch extends CRM_Core_Control
     return 'CRM_Contact_Selector_DataProcessorContactSearch';
   }
 
+  /**
+   * @param string $name
+   * @param bool $addSequence
+   * @param bool $ignoreKey
+   *
+   * @return mixed|string
+   */
+  public function key($name, $addSequence = FALSE, $ignoreKey = FALSE) {
+    $config = CRM_Core_Config::singleton();
+
+    if (
+      $ignoreKey ||
+      (isset($config->keyDisable) && $config->keyDisable)
+    ) {
+      return NULL;
+    }
+
+    $key = CRM_Utils_Array::value('qfKey', $_REQUEST, NULL);
+    if (!$key && $_SERVER['REQUEST_METHOD'] === 'GET') {
+      $key = CRM_Core_Key::get($name, $addSequence);
+    }
+    else if (!$_SERVER['REQUEST_METHOD'] === 'POST' || !isset($_REQUEST['ssId'])) {
+      $_key = CRM_Core_Key::validate($key, $name, $addSequence);
+    }
+    if (!$key) {
+      $this->invalidKey();
+    }
+
+    $this->_key = $key;
+
+    return $key;
+  }
+
 }
