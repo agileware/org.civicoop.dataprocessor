@@ -1,4 +1,4 @@
-# Version 1.48-dev
+# Version 1.48
 
 * Fixed permission issue with Contact Type Filter
 * Fixed export from Smart Groups, by manage groups --> contacts --> export CSV
