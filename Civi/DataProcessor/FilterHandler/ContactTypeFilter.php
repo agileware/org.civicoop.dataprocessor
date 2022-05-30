@@ -156,20 +156,23 @@ class ContactTypeFilter extends AbstractFieldFilterHandler {
     }
 
     $api_params['is_active'] = 1;
+    $contactTypeApiCall = civicrm_api3('ContactType', 'getlist', $api_params);
+    $contactTypes = [];
+    foreach($contactTypeApiCall['values'] as $contactType) {
+      $contactTypes[$contactType['id']] = $contactType['label'];
+    }
     $form->add('select', "{$fieldSpec->alias}_op", E::ts('Operator:'), $operations, true, [
       'style' => $minWidth,
       'class' => 'crm-select2 '.$sizeClass,
       'multiple' => FALSE,
       'placeholder' => E::ts('- select -'),
     ]);
-    $form->addEntityRef( "{$fieldSpec->alias}_value", NULL, array(
-      'placeholder' => E::ts('Select a contact type'),
-      'entity' => 'ContactType',
-      'api' => array('params' => $api_params),
-      'create' => false,
-      'multiple' => true,
-      'select' => ['minimumInputLength' => 0],
-    ));
+    $form->add('select', "{$alias}_value", null, $contactTypes, false, [
+      'style' => $minWidth,
+      'class' => 'crm-select2 '.$sizeClass,
+      'multiple' => TRUE,
+      'placeholder' => E::ts('- Select -'),
+    ]);
 
     if (isset($defaultFilterValue['op'])) {
       $defaults[$alias . '_op'] = $defaultFilterValue['op'];
