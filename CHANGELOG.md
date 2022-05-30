@@ -1,3 +1,5 @@
+# Version 1.49-dev (not yet released)
+
 # Version 1.48
 
 * Fixed permission issue with Contact Type Filter
