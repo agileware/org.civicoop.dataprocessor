@@ -1,4 +1,4 @@
-# Version 1.49-dev (not yet released)
+# Version 1.49
 
 * Added filter for Contact Has Event of Type
 * Added filter for contact has contributions with status
