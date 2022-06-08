@@ -1,5 +1,8 @@
 # Version 1.49-dev (not yet released)
 
+* Added filter for Contact Has Event of Type
+* Added filter for contact has contributions with status
+
 # Version 1.48
 
 * Fixed permission issue with Contact Type Filter
@@ -7,7 +10,7 @@
 
 # Version 1.47
 
-* Added Field Output Handler for Text from Template. 
+* Added Field Output Handler for Text from Template.
 
 
 # Version 1.46
