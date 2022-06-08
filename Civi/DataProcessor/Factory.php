@@ -187,6 +187,7 @@ class Factory {
     $this->addOutputHandler('groups_of_contact', new Definition('Civi\DataProcessor\FieldOutputHandler\GroupsOfContactFieldOutputHandler'), E::ts('Display the groups of a contact'));
     $this->addOutputHandler('tags_of_contact', new Definition('Civi\DataProcessor\FieldOutputHandler\TagsOfContactFieldOutputHandler'), E::ts('Display the tags of a contact'));
     $this->addOutputHandler('event_repeating_info', new Definition('Civi\DataProcessor\FieldOutputHandler\EventRepeatingInfoFieldOutputHandler'), E::ts('Display info about repeating event'));
+    $this->addOutputHandler('participants', new Definition('Civi\DataProcessor\FieldOutputHandler\ParticipantsFieldOutputHandler'), E::ts('List event registrations'));
     $this->addOutputHandler('event_participants', new Definition('Civi\DataProcessor\FieldOutputHandler\EventParticipantsFieldOutputHandler'), E::ts('List participants'));
     $this->addOutputHandler('event_participant_count', new Definition('Civi\DataProcessor\FieldOutputHandler\EventParticipantsCountFieldOutputHandler'), E::ts('Participant Count'));
     $this->addOutputHandler('contribution_count', new Definition('Civi\DataProcessor\FieldOutputHandler\ContributionCountFieldOutputHandler'), E::ts('Contribution Count'));

@@ -2,6 +2,7 @@
 
 * Added filter for Contact Has Event of Type
 * Added filter for contact has contributions with status
+* Added field output handler for listing event registrations of a contact
 
 # Version 1.48
 
