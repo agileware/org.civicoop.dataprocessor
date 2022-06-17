@@ -1,6 +1,6 @@
 # Version 1.50 (not yet released)
 
-
+* Fixed when using the CSV export, the web browser can cache the downloaded CSV file with MR !103
 
 # Version 1.49
 
