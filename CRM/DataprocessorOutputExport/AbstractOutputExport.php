@@ -170,6 +170,8 @@ abstract class CRM_DataprocessorOutputExport_AbstractOutputExport implements Exp
       \CRM_Core_Error::statusBounce('The file is either empty or you do not have permission to retrieve the file');
     }
 
+    CRM_Utils_System::setHttpHeader('Expires', gmdate('D, d M Y H:i:s \G\M\T', time()));
+    CRM_Utils_System::setHttpHeader('Cache-Control', 'must-revalidate, post-check=0, pre-check=0');
     CRM_Utils_System::setHttpHeader('Access-Control-Allow-Origin', '*');
     \CRM_Utils_System::download(
       $download_name,
