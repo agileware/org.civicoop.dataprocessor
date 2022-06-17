@@ -1,5 +1,9 @@
 {crmScope extensionKey='dataprocessor'}
-
+    <div class="crm-section">
+        <div class="label">{$form.altcsvfilename.label}</div>
+        <div class="content">{$form.altcsvfilename.html}</div>
+        <div class="clear"></div>
+    </div>
     <div class="crm-section">
         <div class="label">{$form.delimiter.label}</div>
         <div class="content">{$form.delimiter.html}</div>
