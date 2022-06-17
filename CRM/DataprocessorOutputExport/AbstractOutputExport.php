@@ -143,7 +143,12 @@ abstract class CRM_DataprocessorOutputExport_AbstractOutputExport implements Exp
 
   public function doDirectDownload(\Civi\DataProcessor\ProcessorType\AbstractProcessorType $dataProcessorClass, $dataProcessor, $outputBAO, $sortFieldName = null, $sortDirection = 'ASC', $idField=null, $selectedIds=array()) {
     $filename = date('Ymdhis').'_'.$dataProcessor['id'].'_'.$outputBAO['id'].'_'.CRM_Core_Session::getLoggedInContactID().'_'.$dataProcessor['name'];
-    $download_name = date('Ymdhis').'_'.$dataProcessor['name'].'.'.$this->getExtension();
+
+    if (isset($outputBAO['configuration']['altcsvfilename']) && ''!==$outputBAO['configuration']['altcsvfilename']) {
+      $download_name = $outputBAO['configuration']['altcsvfilename'];
+    } else {
+      $download_name = date('Ymdhis') . '_' . $dataProcessor['name'] . '.' . $this->getExtension();
+    }
 
     $basePath = CRM_Core_Config::singleton()->templateCompileDir . $this->getDirectory();
     CRM_Utils_File::createDir($basePath);

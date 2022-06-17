@@ -35,13 +35,19 @@ class CRM_DataprocessorOutputExport_CSV extends CRM_DataprocessorOutputExport_Ab
    */
   public function buildConfigurationForm(\CRM_Core_Form $form, $output=array()) {
     parent::buildConfigurationForm($form, $output);
+    $form->add('text', 'altcsvfilename', E::ts('Alternate CSV File Name'), array(), false);
     $form->add('text', 'delimiter', E::ts('Delimiter'), array(), true);
     $form->add('text', 'enclosure', E::ts('Enclosure'), array(), true);
-    $form->add('text', 'escape_char', E::ts('Escape char'), array(), true);
+    $form->add('text', 'escape_char', E::ts('Escape Character'), array(), true);
 
     $configuration = false;
     if ($output && isset($output['configuration'])) {
       $configuration = $output['configuration'];
+    }
+    if ($configuration && isset($configuration['altcsvfilename']) && $configuration['altcsvfilename']) {
+      $defaults['altcsvfilename'] = $configuration['altcsvfilename'];
+    } else {
+      $defaults['altcsvfilename'] = '';
     }
     if ($configuration && isset($configuration['delimiter']) && $configuration['delimiter']) {
       $defaults['delimiter'] = $configuration['delimiter'];
@@ -81,6 +87,10 @@ class CRM_DataprocessorOutputExport_CSV extends CRM_DataprocessorOutputExport_Ab
    */
   public function processConfiguration($submittedValues, &$output) {
     $configuration = parent::processConfiguration($submittedValues, $output);
+
+    if (isset($submittedValues['altcsvfilename']) && ''!==$submittedValues['altcsvfilename']) {
+      $configuration['altcsvfilename'] = CRM_Utils_String::munge(str_replace('.csv', '', $submittedValues['altcsvfilename'])) . '.' . $this->getExtension();
+    }
     $configuration['delimiter'] = $submittedValues['delimiter'];
     $configuration['enclosure'] = $submittedValues['enclosure'];
     $configuration['escape_char'] = $submittedValues['escape_char'];
