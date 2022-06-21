@@ -1,3 +1,5 @@
+# Version 1.51-dev (not yet released)
+
 # Version 1.50
 
 * When using a search output the row header will stick upon scroll.
