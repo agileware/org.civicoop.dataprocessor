@@ -1,3 +1,7 @@
+# Version 1.52 (not yet released)
+
+
+
 # Version 1.51
 
 * Fixed regression with sticky row header.
