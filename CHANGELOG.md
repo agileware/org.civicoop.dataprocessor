@@ -1,4 +1,4 @@
-# Version 1.50 (not yet released)
+# Version 1.50
 
 * When using a search output the row header will stick upon scroll.
 * Fixed when using the CSV export, the web browser can cache the downloaded CSV file with MR !103
