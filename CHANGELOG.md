@@ -1,5 +1,6 @@
 # Version 1.50 (not yet released)
 
+* When using a search output the row header will stick upon scroll.
 * Fixed when using the CSV export, the web browser can cache the downloaded CSV file with MR !103
 * Provides ability to set the file name for the CSV export download, instead of using randomly generated file name  with MR !104
 
