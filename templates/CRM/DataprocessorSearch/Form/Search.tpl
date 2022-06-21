@@ -32,7 +32,7 @@
                     <tr>
                         {if $id_field && $taskMetaData}<th scope="col" title="Select Rows">{$form.toggleSelect.html}</th>{/if}
                         {foreach from=$columnHeaders key=headerName item=headerTitle}
-                            <th scope="col">
+                            <th scope="col" style="position: sticky; top: 0;">
                                 {if ($sort->_response.$headerName)}
                                     {$sort->_response.$headerName.link}
                                 {else}
