@@ -30,9 +30,9 @@
                 <table class="selector row-highlight">
                     <thead class="sticky">
                     <tr>
-                        {if $id_field && $taskMetaData}<th scope="col" title="Select Rows">{$form.toggleSelect.html}</th>{/if}
+                        {if $id_field && $taskMetaData}<th scope="col" title="Select Rows" style="position: sticky; top: 35px;">{$form.toggleSelect.html}</th>{/if}
                         {foreach from=$columnHeaders key=headerName item=headerTitle}
-                            <th scope="col" style="position: sticky; top: 0;">
+                            <th scope="col" style="position: sticky; top: 35px;">
                                 {if ($sort->_response.$headerName)}
                                     {$sort->_response.$headerName.link}
                                 {else}

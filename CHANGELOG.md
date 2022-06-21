@@ -1,4 +1,6 @@
-# Version 1.51-dev (not yet released)
+# Version 1.51
+
+* Fixed regression with sticky row header.
 
 # Version 1.50
 
