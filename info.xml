@@ -18,8 +18,6 @@
   <version>1.52-dev</version>
   <develStage>stable</develStage>
   <compatibility>
-    <ver>5.20</ver>
-    <ver>5.35</ver>
     <ver>5.41</ver>
     <ver>5.43</ver>
   </compatibility>
