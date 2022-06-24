@@ -23,6 +23,9 @@
     <ver>5.41</ver>
     <ver>5.43</ver>
   </compatibility>
+  <requires>
+    <ext>legacycustomsearches</ext>
+  </requires>
   <classloader>
     <psr4 prefix="Civi\" path="Civi"/>
   </classloader>
