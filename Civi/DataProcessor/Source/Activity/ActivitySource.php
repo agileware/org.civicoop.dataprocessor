@@ -131,7 +131,7 @@ class ActivitySource extends AbstractCivicrmEntitySource {
       'max_modified_date' => E::ts('Last one by modified date'),
       'min_modified_date' => E::ts('First one by modified date'),
       'max_id' => E::ts('Last one by activity id'),
-      'min_id' => E::ts('Fist one by activity id'),
+      'min_id' => E::ts('First one by activity id'),
     ];
   }
 
